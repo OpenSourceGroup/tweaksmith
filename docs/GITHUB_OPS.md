@@ -61,8 +61,17 @@ Private only. Native app **must not** depend on it. No payment/signing/Grok secr
 
 ## Human actions remaining
 
-1. `gh auth refresh -s project,read:project` → create Project board  
-2. Add Apple notarization secrets to repo/org Actions when ready  
-3. Install full Xcode for `.app` archive on signing Mac  
-4. Confirm branch protection UI after first push  
-5. Razorpay TEST secrets on staging worker (see Kamyab `docs/TWEAKSMITH_SUPPORT.md`)
+1. **Push Actions workflows** (blocked once by OAuth missing `workflow` scope):
+   ```bash
+   gh auth refresh -h github.com -s workflow,repo,read:org
+   cd /Users/aj/Documents/CU-TweakSmith-Mac/tweaksmith
+   git add .github/workflows
+   git commit -m "Add CI, research-intake, release-candidate, and release workflows"
+   git push
+   ```
+   Local workflow files remain on disk under `.github/workflows/` even if not yet on `main`.
+2. `gh auth refresh -s project,read:project` → create Project board (Inbox/NOW/NEXT/…)  
+3. Add Apple notarization secrets to repo/org Actions when ready  
+4. Install full Xcode for `.app` archive on signing Mac  
+5. Confirm branch protection UI (force-push/deletions disabled; CI required checks optional after first green run)  
+6. Razorpay TEST secrets on staging worker (see Kamyab `docs/TWEAKSMITH_SUPPORT.md`)
