@@ -15,22 +15,23 @@ Tweaksmith targets **macOS Tahoe (26)** and later. **Apple Silicon** is the prim
 
 ---
 
-## Evidence — Window Corners (2026-10-29)
+## Evidence — Window Corners (2026-10-29 + 2026-10-30 re-run)
 
-Host: macOS **27.2** (Build **26B123**, Tahoe 26 family), **arm64**, Apple **M5 Pro**. Full Xcode.app: **absent** (CLT only). Developer ID identities: **0**.
+Host: macOS **27.2** (Build **26B123**, Tahoe 26 family), **arm64**. Full Xcode.app: **absent** (CLT only). Developer ID identities: **0**.
+
+Preference used by **supported apps that honor** `NSConvolutionOverride1`. Tweaksmith does **not** claim to change every Mac window. Fail-closed: unknown macOS majors are not auto-supported.
 
 | Check | Result | Notes |
 |-------|--------|--------|
-| Key `NSConvolutionOverride1` | Present (float) | Observed baseline **6.0** before QA; restored to **6.0** after |
+| Key `NSConvolutionOverride1` | Present (float) | Baseline **6.0**; session restored to **6.0** after QA |
 | Key `NSConvolutionOverride2` | **Absent** | Not exposed in UI |
-| Preset write 4 / 8 / 10 | Read-back matches | Via `defaults write -g` |
-| Restore previous (write prior value) | PASS | |
-| Reset default (delete key) | PASS — key absent | |
-| Re-create after absent | PASS | |
+| Preset write Sharp=4 / Subtle=8 / Classic=10 / Custom=7 | Read-back PASS | Via `defaults write -g` (2026-10-30) |
+| Restore previous | PASS | Wrote prior value **6** |
+| Reset default (delete key) | PASS — key absent | Then re-created baseline **6** |
 | External change (out-of-band write) | Detectable by engine smoke | Smoke: `detect external change` |
-| Restart / logout | **Guidance only** | Visual effect may need quit apps / logout / restart; not forced in QA |
-| Sample apps visual | Manual / incomplete | Finder, System Settings, Safari, Notes/TextEdit, one 3rd-party, custom-chrome: **logout/restart may be required**; in-app preview is illustrative |
-| Isolated-domain smoke | PASS | `./scripts/run-smoke.sh` |
+| Restart / logout | **May be required** | Visual effect often needs quit apps / logout / restart |
+| Sample apps visual | **Not claimed** | Finder, System Settings, Safari, TextEdit/Notes, Chrome/Cursor available on host; chrome response not verified without logout cycle; in-app preview is illustrative only |
+| Isolated-domain smoke | PASS | `./scripts/run-smoke.sh` (2026-10-30) |
 
 Risk: **MEDIUM** (undocumented preference). Always reversible via Settings Engine restore paths.
 

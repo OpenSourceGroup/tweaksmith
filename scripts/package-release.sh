@@ -131,16 +131,25 @@ if [[ "$SIGNING_MODE" == "developer-id" && -n "${APPLE_ID:-}" && -n "${APPLE_APP
   echo "==> Submitting for notarization (credentials not printed)"
   ZIP_NOTARY="${DIST}/${APP_NAME}-${VERSION}-notarize.zip"
   ditto -c -k --keepParent "$APP" "$ZIP_NOTARY"
-  if xcrun notarytool submit "$ZIP_NOTARY" \
+  if ! xcrun notarytool submit "$ZIP_NOTARY" \
       --apple-id "$APPLE_ID" \
       --password "$APPLE_APP_SPECIFIC_PASSWORD" \
       --team-id "$APPLE_TEAM_ID" \
       --wait; then
-    xcrun stapler staple "$APP" && NOTARIZED="yes"
-  else
-    echo "warning: notarization failed or unavailable" >&2
+    rm -f "$ZIP_NOTARY"
+    echo "error: notarization failed — refusing to continue as Gatekeeper-ready" >&2
+    exit 1
   fi
+  if ! xcrun stapler staple "$APP"; then
+    rm -f "$ZIP_NOTARY"
+    echo "error: stapler failed after notarization" >&2
+    exit 1
+  fi
+  NOTARIZED="yes"
   rm -f "$ZIP_NOTARY"
+  echo "==> Verifying Gatekeeper assessment (no bypass)"
+  spctl --assess --type execute --verbose=4 "$APP"
+  codesign --verify --deep --strict --verbose=2 "$APP"
 fi
 
 ZIP_NAME="${APP_NAME}-${VERSION}-macos-arm64"

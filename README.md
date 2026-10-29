@@ -24,7 +24,7 @@ Read the full contract: [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.m
 
 ## Status
 
-**v0.1 target:** Settings Engine + Window Corners + Support UX + website support pages.
+**v0.1:** Settings Engine + Window Corners + Support UX. Release gate: **READY WITH KNOWN LIMITATIONS** (unsigned RC; needs full Xcode + Developer ID + notarization for public Gatekeeper). See [`docs/RELEASE_GATE_VERDICT.md`](docs/RELEASE_GATE_VERDICT.md).
 
 ---
 
