@@ -11,7 +11,7 @@ struct SupportTweaksmithView: View {
                 .foregroundStyle(TSTheme.navy)
             Text("Free software. Pay what it's worth.")
                 .font(.title3)
-            Text("Voluntary support never unlocks features. There are no accounts, ads, or telemetry. Payments are processed on kamyab.co.in in your browser — the app never handles card data or trusts URL query flags like ?paid=true.")
+            Text("Voluntary support never unlocks features. There are no accounts, ads, or telemetry. Optional payments are processed by Kamyab Infotech Pvt Ltd, the project's maintainer, in your browser. The app never handles card data or trusts URL query flags like ?paid=true.")
                 .foregroundStyle(TSTheme.graphite)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -67,15 +67,22 @@ struct AboutView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("About").font(.largeTitle.weight(.semibold)).foregroundStyle(TSTheme.navy)
-            Text("Tweaksmith by Kamyab")
-                .font(.title3)
             Text("Make your Mac yours.")
-            Text("Official site: https://kamyab.co.in/tweaksmith")
-                .foregroundStyle(TSTheme.navy)
-            Text("© Kamyab Infotech Private Limited. Code licensed MIT. Branding (name, logo, identity) remains Kamyab-controlled.")
+                .font(.title3)
+            Text("An Open Source Group project.")
+            Text("Maintained by Kamyab Infotech.")
+            VStack(alignment: .leading, spacing: 4) {
+                Link("Open Source Group", destination: ProjectLinks.osg)
+                Link("GitHub", destination: ProjectLinks.github)
+                Link("Tweaksmith website", destination: ProjectLinks.website)
+                Link("Kamyab Infotech", destination: ProjectLinks.kamyab)
+                Link("MIT License", destination: ProjectLinks.license)
+            }
+            .font(.callout)
+            Text("Code licensed MIT. Copyright (c) 2026 Kamyab Infotech Private Limited.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
-            Text("No telemetry. Offline-capable native app. Official builds published by Kamyab via GitHub Releases.")
+            Text("No telemetry. Offline-capable native app. Optional payments are processed by Kamyab Infotech Pvt Ltd, the project's maintainer.")
                 .font(.callout)
                 .foregroundStyle(.secondary)
             Spacer()

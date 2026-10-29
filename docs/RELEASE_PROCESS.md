@@ -1,6 +1,6 @@
 # Release Process
 
-Official releases are built by **Kamyab Infotech**, signed/notarized when CI secrets exist, and published to GitHub Releases and the website ([kamyab.co.in](https://kamyab.co.in)).
+Official releases are published by authorized maintainers. **Kamyab Infotech** is the current lead maintainer. Builds are signed and notarized when CI secrets exist, then published to GitHub Releases and the website ([kamyab.co.in](https://kamyab.co.in)).
 
 ---
 

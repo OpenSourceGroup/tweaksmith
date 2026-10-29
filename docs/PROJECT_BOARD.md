@@ -1,6 +1,6 @@
 # Tweaksmith project board (label + milestone fallback)
 
-A GitHub **Projects v2** board titled “Tweaksmith” is optional. Until an org token with project scopes exists, the backlog uses **issue labels + milestones** on [`KamyabInfotech/tweaksmith`](https://github.com/KamyabInfotech/tweaksmith).
+A GitHub **Projects v2** board titled “Tweaksmith” is optional. Until an org token with project scopes exists, the backlog uses **issue labels + milestones** on [`OpenSourceGroup/tweaksmith`](https://github.com/OpenSourceGroup/tweaksmith).
 
 Maintainers set roadmap labels. Contributors propose via Feature / Bug / Compatibility templates.
 
@@ -22,16 +22,16 @@ Exactly **one** roadmap label among `now` / `next` / `later` / `experimental` / 
 
 ## Views
 
-- Labels: https://github.com/KamyabInfotech/tweaksmith/labels  
-- Milestones: https://github.com/KamyabInfotech/tweaksmith/milestones  
-- Open Now: https://github.com/KamyabInfotech/tweaksmith/issues?q=is%3Aissue+is%3Aopen+label%3Anow
+- Labels: https://github.com/OpenSourceGroup/tweaksmith/labels  
+- Milestones: https://github.com/OpenSourceGroup/tweaksmith/milestones  
+- Open Now: https://github.com/OpenSourceGroup/tweaksmith/issues?q=is%3Aissue+is%3Aopen+label%3Anow
 
 ## Projects v2 (when scopes exist)
 
 ```bash
-gh project create --owner KamyabInfotech --title "Tweaksmith"
+gh project create --owner OpenSourceGroup --title "Tweaksmith"
 # Add Status options: Inbox, Now, Next, Later, Experimental, Wont build, In Progress, QA, Released
-# Link repo KamyabInfotech/tweaksmith
+# Link repo OpenSourceGroup/tweaksmith
 ```
 
 See also: [GITHUB_OPS.md](GITHUB_OPS.md), [.github/LABELS.md](../.github/LABELS.md), [ROADMAP.md](ROADMAP.md).

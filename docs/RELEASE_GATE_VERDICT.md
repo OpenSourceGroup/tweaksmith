@@ -32,7 +32,7 @@
 | Signing | `unsigned-adhoc` |
 | Notarized | no |
 | Gatekeeper public OK | no |
-| Draft release | https://github.com/KamyabInfotech/tweaksmith/releases/tag/untagged-446375ca22eeecae2e81 |
+| Draft release | https://github.com/OpenSourceGroup/tweaksmith/releases/tag/untagged-446375ca22eeecae2e81 |
 
 ## Known limitations
 

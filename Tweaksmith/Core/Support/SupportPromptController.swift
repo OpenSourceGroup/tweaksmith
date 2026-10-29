@@ -32,8 +32,8 @@ public enum SupportPromptDecision: Equatable, Sendable {
 }
 
 public final class SupportPromptController: @unchecked Sendable {
-    public static let supportURL = URL(string: "https://kamyab.co.in/tweaksmith/support")!
-    public static let productURL = URL(string: "https://kamyab.co.in/tweaksmith")!
+    public static let supportURL = ProjectLinks.support
+    public static let productURL = ProjectLinks.website
 
     public static let minSuccessfulActions = 3
     public static let maxUnsolicited = 3

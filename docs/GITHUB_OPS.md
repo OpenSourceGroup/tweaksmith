@@ -4,7 +4,9 @@
 
 | Repo | Visibility | URL |
 |------|------------|-----|
-| `KamyabInfotech/tweaksmith` | Public | https://github.com/KamyabInfotech/tweaksmith |
+| `OpenSourceGroup/tweaksmith` | Public | https://github.com/OpenSourceGroup/tweaksmith |
+
+Canonical URLs also live in [`GOVERNANCE.md`](../GOVERNANCE.md). Kamyab Infotech is the lead maintainer. `KamyabInfotech/tweaksmith` redirects to this repository.
 
 Official product site is **https://kamyab.co.in/tweaksmith** — not GitHub Pages.
 
@@ -27,7 +29,7 @@ Desired Projects v2 statuses (when a token has `project` / `read:project`):
 Inbox · Now · Next · Later · Experimental · Wont build · In Progress · QA · Released
 
 ```bash
-gh project create --owner KamyabInfotech --title "Tweaksmith"
+gh project create --owner OpenSourceGroup --title "Tweaksmith"
 # Then add Status field options matching the columns above; link repo tweaksmith
 ```
 
@@ -38,7 +40,7 @@ For scripted `gh api` calls, use a local credential helper or a scoped PAT — d
 Goals: no force-push; no deletion; optional required CI; admin override for solo maintainer.
 
 ```bash
-gh api -X PUT repos/KamyabInfotech/tweaksmith/branches/main/protection \
+gh api -X PUT repos/OpenSourceGroup/tweaksmith/branches/main/protection \
   --input - <<'EOF'
 {
   "required_status_checks": null,

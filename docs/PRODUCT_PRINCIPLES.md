@@ -4,7 +4,7 @@
 
 Tweaksmith is a free, open-source, native macOS application built with Swift and SwiftUI. It helps people tune appearance and behavior through reversible, modular tweaks—without compromising safety, privacy, or system integrity.
 
-Maintained by **Kamyab Infotech** ([kamyab.co.in](https://kamyab.co.in)). Official builds and branding are Kamyab-controlled. Source code is licensed under MIT.
+**An Open Source Group project.** Maintained by **Kamyab Infotech** ([kamyab.co.in](https://kamyab.co.in)). Official builds are published by the maintainer. Source code is licensed under MIT. Copyright in `LICENSE` stays Kamyab Infotech Private Limited until a legal owner decides otherwise.
 
 ---
 
@@ -17,7 +17,7 @@ Maintained by **Kamyab Infotech** ([kamyab.co.in](https://kamyab.co.in)). Offici
 | **Modular** | Features ship as modules; enable only what you use |
 | **Reversible** | Every change has a clear undo path (history, restore, reset) |
 | **Privacy** | No telemetry, no ads, no accounts, no phone-home analytics |
-| **Voluntary support** | Pay-what-it’s-worth is optional and **never** unlocks features |
+| **Voluntary support** | Optional payments are processed by Kamyab Infotech Pvt Ltd, the project's maintainer, and **never** unlock features |
 | **Safety** | No SIP disable, no Gatekeeper disable, no kernel extensions |
 | **Platform** | macOS **Tahoe 26+**; **Apple Silicon first** (Intel best-effort where feasible) |
 | **Domain** | Official web presence uses **kamyab.co.in** — never kamyab.in |

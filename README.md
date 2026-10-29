@@ -2,7 +2,11 @@
 
 **Make your Mac yours.**
 
-Free, open-source, native macOS tweaks—modular, reversible, and private. Built with Swift and SwiftUI by [Kamyab Infotech](https://kamyab.co.in).
+Free, open-source native macOS utility — modular, reversible, and private.
+
+**An Open Source Group project.**
+
+**Maintained by Kamyab Infotech.**
 
 ---
 
@@ -34,6 +38,7 @@ Read the full contract: [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.m
 | [Roadmap](docs/ROADMAP.md) | Now / Next / Later |
 | [Contributing](CONTRIBUTING.md) | PR flow & tests |
 | [Security](SECURITY.md) | Vulnerability reporting |
+| [Governance](GOVERNANCE.md) | Project, maintainer, releases |
 | [Release process](docs/RELEASE_PROCESS.md) | RC → gate → production |
 
 ---
@@ -56,12 +61,14 @@ swift test   # needs Xcode/XCTest; CLT hosts use run-smoke.sh
 
 ## License
 
-Code: [MIT](LICENSE). Name and official builds are Kamyab-controlled; see PRODUCT_PRINCIPLES for branding.
+Code: [MIT](LICENSE). Copyright in that file stays **Kamyab Infotech Private Limited** until a legal owner decides otherwise. This README does not transfer copyright to Open Source Group.
 
 ---
 
 ## Contact
 
-- Website: [kamyab.co.in](https://kamyab.co.in) (never kamyab.in)
+- Open Source Group: [osg.co.in](https://osg.co.in)
+- GitHub: [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith)
 - Product: [kamyab.co.in/tweaksmith](https://kamyab.co.in/tweaksmith)
+- Maintainer: [Kamyab Infotech](https://kamyab.co.in) (never kamyab.in)
 - Security: security@kamyab.co.in — see [SECURITY.md](SECURITY.md)

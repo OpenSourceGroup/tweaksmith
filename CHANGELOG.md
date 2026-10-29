@@ -6,8 +6,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
-### Added
-- (none yet)
+### Changed
+- Public repository is [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith). Kamyab Infotech remains the lead maintainer.
 
 ## [0.1.0] - 2026-10-29
 
@@ -33,6 +33,6 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Planned for stable
 - Signed/notarized official `.app` when Apple CI secrets exist
 
-[Unreleased]: https://github.com/KamyabInfotech/tweaksmith/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/KamyabInfotech/tweaksmith/releases/tag/v0.1.0
-[0.1.0-rc.1]: https://github.com/KamyabInfotech/tweaksmith/releases/tag/v0.1.0-rc.1
+[Unreleased]: https://github.com/OpenSourceGroup/tweaksmith/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0
+[0.1.0-rc.1]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-rc.1

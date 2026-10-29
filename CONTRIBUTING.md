@@ -11,7 +11,7 @@ Thank you for helping make Macs more personal—safely and reversibly.
 ## Development setup
 
 ```bash
-git clone https://github.com/KamyabInfotech/tweaksmith.git
+git clone https://github.com/OpenSourceGroup/tweaksmith.git
 cd tweaksmith
 ./scripts/bootstrap-check.sh
 ./scripts/run-smoke.sh
