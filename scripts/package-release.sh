@@ -122,8 +122,9 @@ elif security find-identity -v -p codesigning 2>/dev/null | grep -q 'Developer I
   SIGNING_MODE="developer-id"
 else
   echo "==> No Developer ID — ad-hoc codesign (NOT for public Gatekeeper distribution)"
-  codesign --force --sign - "${MACOS}/${APP_NAME}" 2>/dev/null || true
-  codesign --force --deep --sign - "$APP" 2>/dev/null || true
+  xattr -cr "$APP" 2>/dev/null || true
+  codesign --force --sign - --timestamp=none "${MACOS}/${APP_NAME}" 2>/dev/null || true
+  codesign --force --deep --sign - --timestamp=none "$APP"
   SIGNING_MODE="unsigned-adhoc"
 fi
 
