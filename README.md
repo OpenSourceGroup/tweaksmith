@@ -8,6 +8,12 @@ Free, open-source native macOS utility — modular, reversible, and private.
 
 **Maintained by Kamyab Infotech.**
 
+![Window Corners — dark](docs/screenshots/01-window-corners-dark.png)
+
+![Window Corners — light](docs/screenshots/02-window-corners-light.png)
+
+![Changes](docs/screenshots/03-changes.png)
+
 ---
 
 ## Principles
@@ -24,9 +30,11 @@ Read the full contract: [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.m
 
 ## Status
 
-**v0.1 Developer Preview (unsigned):** Settings Engine + Window Corners + Support UX. Published as a GitHub **pre-release** — **not** Developer ID signed or notarized; **not** Stable. Stable Gatekeeper v0.1 remains **BLOCKED** until Developer ID + notarization. See [`docs/RELEASE_GATE_VERDICT.md`](docs/RELEASE_GATE_VERDICT.md).
+**Developer Preview 2 · Unsigned · For technical users.** Settings Engine + Window Corners + Changes + Support. Published as a GitHub **pre-release** — **not** Developer ID signed or notarized; **not** Stable. Stable Gatekeeper v0.1 remains **BLOCKED** until Developer ID + notarization. See [`docs/RELEASE_GATE_VERDICT.md`](docs/RELEASE_GATE_VERDICT.md).
 
-Download (Developer Preview): [GitHub Releases](https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0)
+Download (Developer Preview 2): [GitHub Pre-release `v0.1.0-dev.2`](https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-dev.2)
+
+macOS may require **System Settings → Privacy & Security → Open Anyway**. Do not disable Gatekeeper or SIP.
 
 ---
 
@@ -61,7 +69,7 @@ Tweaksmith is free open-source software. **Payment never unlocks features.**
 ./scripts/bootstrap-check.sh
 ./scripts/run-smoke.sh
 ./scripts/release-gate.sh   # human checklist — see docs/RELEASE_GATE.md
-./scripts/package-release.sh 0.1.0-rc.1   # SwiftPM .app zip + SHA-256 under dist/
+./scripts/package-release.sh 0.1.0-dev.2   # SwiftPM .app zip + SHA-256 under dist/
 ```
 
 ```bash

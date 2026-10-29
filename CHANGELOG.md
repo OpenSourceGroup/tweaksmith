@@ -9,6 +9,21 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 - Public repository is [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith). Kamyab Infotech remains the lead maintainer.
 
+## [0.1.0-dev.2] - 2026-10-30
+
+### Added
+- Developer Preview 2 unsigned pre-release packaging (`Tweaksmith-0.1.0-Developer-Preview-2-macOS.zip`)
+- FORGED CORNER `AppIcon.icns` + curated product screenshots in README
+
+### Fixed
+- Blank UI: Window Corners opens immediately; sidebar Window Corners / Changes / Support only
+- Preference backend wrote `.global` keys to the app domain — now uses `CFPreferences` / NSGlobalDomain
+- Release ZIP AppleDouble (`._*`) pollution that broke sealed-resource verify on some extracts
+
+### Known limitations
+- Unsigned ad-hoc preview — Gatekeeper rejection expected; Open Anyway for technical users
+- Stable Gatekeeper v0.1 still blocked on Developer ID + notarization
+
 ## [0.1.0] - 2026-10-29
 
 ### Added
@@ -34,6 +49,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Planned for stable
 - Signed/notarized official `.app` when Apple CI secrets exist
 
-[Unreleased]: https://github.com/OpenSourceGroup/tweaksmith/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/OpenSourceGroup/tweaksmith/compare/v0.1.0-dev.2...HEAD
+[0.1.0-dev.2]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-dev.2
 [0.1.0]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0
 [0.1.0-rc.1]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-rc.1

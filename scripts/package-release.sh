@@ -83,6 +83,8 @@ cat > "${CONTENTS}/Info.plist" <<EOF
 	<string>${MIN_SYS}</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
+	<key>CFBundleIconFile</key>
+	<string>AppIcon</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSPrincipalClass</key>
@@ -90,6 +92,11 @@ cat > "${CONTENTS}/Info.plist" <<EOF
 </dict>
 </plist>
 EOF
+
+# Ensure AppIcon.icns lands in Resources even if find-copy missed it.
+if [[ -f "${ROOT}/Tweaksmith/Resources/AppIcon.icns" ]]; then
+  cp "${ROOT}/Tweaksmith/Resources/AppIcon.icns" "${RES}/AppIcon.icns"
+fi
 
 # Optional Developer ID path (never log secret values).
 if [[ -n "${APPLE_CERTIFICATE_BASE64:-}" && -n "${APPLE_CERTIFICATE_PASSWORD:-}" ]]; then
@@ -122,7 +129,9 @@ elif security find-identity -v -p codesigning 2>/dev/null | grep -q 'Developer I
   SIGNING_MODE="developer-id"
 else
   echo "==> No Developer ID — ad-hoc codesign (NOT for public Gatekeeper distribution)"
+  find "$APP" -name '._*' -delete 2>/dev/null || true
   xattr -cr "$APP" 2>/dev/null || true
+  find "$APP" -print0 2>/dev/null | xargs -0 xattr -c 2>/dev/null || true
   codesign --force --sign - --timestamp=none "${MACOS}/${APP_NAME}" 2>/dev/null || true
   codesign --force --deep --sign - --timestamp=none "$APP"
   SIGNING_MODE="unsigned-adhoc"
@@ -158,7 +167,17 @@ if [[ "$SIGNING_MODE" != "developer-id" || "$NOTARIZED" != "yes" ]]; then
   ZIP_NAME="${ZIP_NAME}-UNSIGNED-NOT-FOR-GATEKEEPER"
 fi
 ZIP_PATH="${DIST}/${ZIP_NAME}.zip"
-ditto -c -k --keepParent "$APP" "$ZIP_PATH"
+# Strip AppleDouble / FinderInfo before final seal + zip (keeps codesign valid after extract).
+find "$APP" -name '._*' -delete 2>/dev/null || true
+xattr -cr "$APP" 2>/dev/null || true
+find "$APP" -print0 2>/dev/null | xargs -0 xattr -c 2>/dev/null || true
+# Re-seal after xattr strip (ad-hoc or Dev ID).
+if [[ "$SIGNING_MODE" == "unsigned-adhoc" ]]; then
+  codesign --force --deep --sign - --timestamp=none "$APP"
+elif [[ "$SIGNING_MODE" == "developer-id" ]]; then
+  codesign --force --options runtime --timestamp --sign "$IDENTITY" "$APP"
+fi
+COPYFILE_DISABLE=1 ditto -c -k --norsrc --keepParent "$APP" "$ZIP_PATH"
 
 # Also ship bare binary archive for CLT / headless validation.
 BIN_ZIP="${DIST}/${APP_NAME}-${VERSION}-macos-arm64-binary-ONLY.zip"

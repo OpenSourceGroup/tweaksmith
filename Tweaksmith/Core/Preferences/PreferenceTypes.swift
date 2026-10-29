@@ -145,7 +145,7 @@ public enum EnginePhase: String, Codable, Sendable {
     case error
 }
 
-public struct EngineEvent: Equatable, Sendable, Codable {
+public struct EngineEvent: Equatable, Sendable, Codable, Identifiable {
     public let id: UUID
     public let at: Date
     public let phase: EnginePhase

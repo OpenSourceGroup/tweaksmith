@@ -20,8 +20,17 @@ public final class UserDefaultsPreferenceBackend: PreferenceBackend, @unchecked 
 
     public func read(_ key: PreferenceKey) throws -> PreferenceEntry {
         try guardDomain(key.domain)
-        let defaults = try defaults(for: key.domain)
         lock.lock(); defer { lock.unlock() }
+        if case .global = key.domain {
+            // NSGlobalDomain via CFPreferences — never UserDefaults.standard (app domain).
+            if let raw = CFPreferencesCopyAppValue(key.name as CFString, kCFPreferencesAnyApplication) {
+                if let value = PreferenceValue(any: raw) {
+                    return PreferenceEntry(key: key, value: value, existed: true)
+                }
+            }
+            return PreferenceEntry(key: key, value: .null, existed: false)
+        }
+        let defaults = try defaults(for: key.domain)
         if let raw = defaults.object(forKey: key.name), let value = PreferenceValue(any: raw) {
             return PreferenceEntry(key: key, value: value, existed: true)
         }
@@ -30,8 +39,21 @@ public final class UserDefaultsPreferenceBackend: PreferenceBackend, @unchecked 
 
     public func write(_ key: PreferenceKey, value: PreferenceValue) throws {
         try guardDomain(key.domain)
-        let defaults = try defaults(for: key.domain)
         lock.lock(); defer { lock.unlock() }
+        if case .global = key.domain {
+            switch value {
+            case .null:
+                CFPreferencesSetAppValue(key.name as CFString, nil, kCFPreferencesAnyApplication)
+            default:
+                guard let obj = value.anyObject else {
+                    CFPreferencesSetAppValue(key.name as CFString, nil, kCFPreferencesAnyApplication)
+                    return
+                }
+                CFPreferencesSetAppValue(key.name as CFString, obj as CFPropertyList, kCFPreferencesAnyApplication)
+            }
+            return
+        }
+        let defaults = try defaults(for: key.domain)
         switch value {
         case .null:
             defaults.removeObject(forKey: key.name)
@@ -46,15 +68,24 @@ public final class UserDefaultsPreferenceBackend: PreferenceBackend, @unchecked 
 
     public func remove(_ key: PreferenceKey) throws {
         try guardDomain(key.domain)
-        let defaults = try defaults(for: key.domain)
         lock.lock(); defer { lock.unlock() }
+        if case .global = key.domain {
+            CFPreferencesSetAppValue(key.name as CFString, nil, kCFPreferencesAnyApplication)
+            return
+        }
+        let defaults = try defaults(for: key.domain)
         defaults.removeObject(forKey: key.name)
     }
 
     public func synchronize(_ domain: PreferenceDomain) throws {
         try guardDomain(domain)
-        let defaults = try defaults(for: domain)
         lock.lock(); defer { lock.unlock() }
+        if case .global = domain {
+            // Flush NSGlobalDomain to disk so `defaults read -g` and other processes see it.
+            _ = CFPreferencesAppSynchronize(kCFPreferencesAnyApplication)
+            return
+        }
+        let defaults = try defaults(for: domain)
         _ = defaults.synchronize()
     }
 
@@ -69,7 +100,10 @@ public final class UserDefaultsPreferenceBackend: PreferenceBackend, @unchecked 
     private func defaults(for domain: PreferenceDomain) throws -> UserDefaults {
         switch domain {
         case .global:
-            return .standard
+            // Unreachable — callers use CFPreferences for `.global`. Kept to fail loudly if misused.
+            throw SettingsEngineError.backendFailure(
+                "NSGlobalDomain must use CFPreferences (kCFPreferencesAnyApplication), not UserDefaults.standard"
+            )
         case .suite(let name):
             guard let suite = UserDefaults(suiteName: name) else {
                 throw SettingsEngineError.backendFailure("Unable to open suite \(name)")

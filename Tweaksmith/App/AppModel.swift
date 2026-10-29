@@ -5,42 +5,48 @@ import TweaksmithCore
 
 @MainActor
 public final class AppModel: ObservableObject {
-    public enum Section: String, CaseIterable, Identifiable {
-        case overview = "Overview"
-        case appearance = "Appearance"
-        case finder = "Finder"
-        case dockDesktop = "Dock & Desktop"
-        case screenshots = "Screenshots"
-        case productivity = "Productivity"
-        case developer = "Developer"
-        case advanced = "Advanced"
-        case support = "Support Tweaksmith"
-        case about = "About"
+    /// Sidebar destinations — real product surfaces only (no fake placeholders).
+    public enum Section: String, CaseIterable, Hashable, Identifiable {
+        case tweaks
+        case activity
+        case support
 
         public var id: String { rawValue }
 
+        var title: String {
+            switch self {
+            case .tweaks: return "Window Corners"
+            case .activity: return "Changes"
+            case .support: return "Support"
+            }
+        }
+
+        var group: String {
+            switch self {
+            case .tweaks: return "TWEAKS"
+            case .activity: return "ACTIVITY"
+            case .support: return "TWEAKSMITH"
+            }
+        }
+
         var systemImage: String {
             switch self {
-            case .overview: return "square.grid.2x2"
-            case .appearance: return "paintbrush"
-            case .finder: return "folder"
-            case .dockDesktop: return "dock.rectangle"
-            case .screenshots: return "camera.viewfinder"
-            case .productivity: return "bolt.horizontal"
-            case .developer: return "chevron.left.forwardslash.chevron.right"
-            case .advanced: return "gearshape.2"
+            case .tweaks: return "rectangle.inset.filled"
+            case .activity: return "clock.arrow.circlepath"
             case .support: return "heart"
-            case .about: return "info.circle"
             }
         }
     }
 
-    @Published var section: Section = .overview
+    /// Non-optional selection with Window Corners as the only valid default.
+    @Published var section: Section = .tweaks
     @Published var engineEvents: [EngineEvent] = []
     @Published var supportSheetPresented = false
     @Published var statusMessage: String?
+    @Published var applyConfirmationVisible = false
     @Published var windowCornersRadius: Double = 8
     @Published var windowCornersPreset: WindowCornersModule.Preset = .subtle8
+    @Published var customRadiusField: String = "8"
     @Published var lastExternalChanges: [SettingsEngine.ExternalChange] = []
 
     let engine: SettingsEngine
@@ -71,11 +77,43 @@ public final class AppModel: ObservableObject {
         self.windowCorners = WindowCornersModule(domain: domain)
         self.registry = ModuleRegistry(modules: [windowCorners])
 
-        let appDefaults = UserDefaults(suiteName: "co.in.kamyab.tweaksmith") ?? .standard
+        // Dedicated suite — never use the bundle id as suiteName (NSUserDefaults warns / no-ops).
+        let appDefaults = UserDefaults(suiteName: "co.in.kamyab.tweaksmith.prefs") ?? .standard
         self.support = SupportPromptController(defaults: appDefaults)
 
         refreshFromSystem()
         maybeOfferSupport()
+    }
+
+    /// Never leave selection invalid — always land on Window Corners.
+    func ensureValidSelection() {
+        if Section.allCases.contains(section) == false {
+            section = .tweaks
+        }
+    }
+
+    var currentRadiusDescription: String {
+        if windowCornersPreset == .systemDefault {
+            return "System Default"
+        }
+        if windowCornersPreset == .custom {
+            return String(format: "Custom · %.1f", windowCornersRadius)
+        }
+        if let r = windowCornersPreset.radius {
+            let name: String
+            switch windowCornersPreset {
+            case .sharp4: name = "Sharp"
+            case .subtle8: name = "Subtle"
+            case .classic10: name = "Classic"
+            default: name = windowCornersPreset.title
+            }
+            return "\(name) · \(Int(r))"
+        }
+        return windowCornersPreset.title
+    }
+
+    var selectedRadiusDescription: String {
+        currentRadiusDescription
     }
 
     func refreshFromSystem() {
@@ -83,12 +121,14 @@ public final class AppModel: ObservableObject {
             let entries = try engine.read(windowCorners.preferenceKeys)
             if let value = entries.first?.value.doubleValue {
                 windowCornersRadius = value
+                customRadiusField = String(format: "%.1f", value)
                 windowCornersPreset = presetMatching(value)
             } else {
                 windowCornersPreset = .systemDefault
             }
             try engine.adoptCurrentAsKnown(windowCorners.preferenceKeys)
             engineEvents = engine.recentEvents()
+            lastExternalChanges = try engine.detectExternalChanges(keys: windowCorners.preferenceKeys)
         } catch {
             statusMessage = error.localizedDescription
         }
@@ -103,10 +143,13 @@ public final class AppModel: ObservableObject {
 
     func applyWindowCorners() {
         do {
-            if windowCornersPreset == .custom,
-               WindowCornersModule.sanitiseRadius(windowCornersRadius) == nil {
-                statusMessage = "Invalid corner radius. Enter a finite value between \(Int(WindowCornersModule.minRadius)) and \(Int(WindowCornersModule.maxRadius))."
-                return
+            if windowCornersPreset == .custom {
+                let parsed = Double(customRadiusField.trimmingCharacters(in: .whitespacesAndNewlines))
+                guard let sanitised = WindowCornersModule.sanitiseRadius(parsed) else {
+                    statusMessage = "Invalid corner radius. Enter a finite value between \(Int(WindowCornersModule.minRadius)) and \(Int(WindowCornersModule.maxRadius))."
+                    return
+                }
+                windowCornersRadius = sanitised
             }
             let report = CompatibilityChecker().evaluate(
                 moduleID: windowCorners.id,
@@ -128,9 +171,15 @@ public final class AppModel: ObservableObject {
                 return
             }
             support.recordSuccessfulAction()
-            statusMessage = "Applied \(windowCornersPreset.title). Restart apps or log out for full effect. Preview is illustrative only."
+            statusMessage = nil
+            applyConfirmationVisible = true
             engineEvents = engine.recentEvents()
+            lastExternalChanges = []
             maybeOfferSupport()
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                applyConfirmationVisible = false
+            }
         } catch {
             statusMessage = "Apply failed: \(error.localizedDescription)"
             engineEvents = engine.recentEvents()
@@ -167,13 +216,24 @@ public final class AppModel: ObservableObject {
             if lastExternalChanges.isEmpty {
                 statusMessage = "No external changes detected for tracked keys."
             } else {
-                statusMessage = "External changes detected on \(lastExternalChanges.count) key(s)."
+                statusMessage = "Changed outside Tweaksmith — values differ from last apply."
             }
         } catch { statusMessage = error.localizedDescription }
     }
 
+    func openSupportInBrowser(amountINR: Int? = nil) {
+        var url = SupportPromptController.supportURL
+        if let amountINR, var components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+            var items = components.queryItems ?? []
+            items.append(URLQueryItem(name: "amount", value: String(amountINR)))
+            components.queryItems = items
+            if let built = components.url { url = built }
+        }
+        NSWorkspace.shared.open(url)
+    }
+
     func openSupportInBrowser() {
-        NSWorkspace.shared.open(SupportPromptController.supportURL)
+        openSupportInBrowser(amountINR: nil)
     }
 
     private func maybeOfferSupport() {
