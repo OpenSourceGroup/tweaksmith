@@ -30,7 +30,8 @@ jobs:
         continue-on-error: true
         run: |
           if xcodebuild -version >/dev/null 2>&1; then
-            swift test
+            chmod +x scripts/run-swift-test.sh
+            ./scripts/run-swift-test.sh
           else
             echo "No full Xcode — skipping XCTest"
             exit 1

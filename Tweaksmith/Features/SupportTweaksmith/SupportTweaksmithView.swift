@@ -15,16 +15,11 @@ struct SupportTweaksmithView: View {
                 .foregroundStyle(TSTheme.graphite)
                 .fixedSize(horizontal: false, vertical: true)
 
-            Button("Pay what it's worth") {
+            Button("Support Tweaksmith") {
                 model.openSupportInBrowser()
             }
             .buttonStyle(.borderedProminent)
             .tint(TSTheme.signal)
-
-            Button("Become a Tweaksmith Supporter") {
-                model.openSupportInBrowser()
-            }
-            .buttonStyle(.bordered)
 
             Spacer()
         }
@@ -42,7 +37,7 @@ struct SupportPromptSheet: View {
             Text("If Tweaksmith helped, you can become a supporter. Nothing is locked either way.")
                 .foregroundStyle(.secondary)
             HStack {
-                Button("Pay what it's worth") {
+                Button("Support Tweaksmith") {
                     model.openSupportInBrowser()
                     dismiss()
                 }

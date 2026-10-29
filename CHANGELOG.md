@@ -19,9 +19,10 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - SwiftPM packaging via `scripts/package-release.sh` (`.app` + SHA-256; ad-hoc when unsigned)
 
 ### Known limitations
-- Official Gatekeeper distribution requires Developer ID + notarization (secrets/Xcode on signing Mac)
+- **Developer Preview** GitHub pre-release is **unsigned** (ad-hoc) — not Developer ID / notarized / Gatekeeper-ready
+- Stable Gatekeeper v0.1 remains blocked until Developer ID + notarization
 - Window Corners may need logout/restart; preview illustrative only
-- Razorpay support path may remain TEST until production cut-over
+- Window Corners adjusts the macOS window-corner preference used by supported applications (no every-app claim; Override2 not exposed)
 
 ## [0.1.0-rc.1] - 2026-10-29
 

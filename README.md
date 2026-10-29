@@ -24,7 +24,19 @@ Read the full contract: [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.m
 
 ## Status
 
-**v0.1:** Settings Engine + Window Corners + Support UX. Release gate: **READY WITH KNOWN LIMITATIONS** (unsigned RC; needs full Xcode + Developer ID + notarization for public Gatekeeper). See [`docs/RELEASE_GATE_VERDICT.md`](docs/RELEASE_GATE_VERDICT.md).
+**v0.1 Developer Preview (unsigned):** Settings Engine + Window Corners + Support UX. Published as a GitHub **pre-release** — **not** Developer ID signed or notarized; **not** Stable. Stable Gatekeeper v0.1 remains **BLOCKED** until Developer ID + notarization. See [`docs/RELEASE_GATE_VERDICT.md`](docs/RELEASE_GATE_VERDICT.md).
+
+Download (Developer Preview): [GitHub Releases](https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0)
+
+---
+
+## Support (voluntary)
+
+Tweaksmith is free open-source software. **Payment never unlocks features.**
+
+- Pay what it’s worth on the production support page: [kamyab.co.in/tweaksmith/support](https://kamyab.co.in/tweaksmith/support)
+- Suggested amounts: ₹199 / ₹499 (Recommended) / ₹999 / Custom
+- Checkout runs in the browser only (Razorpay). The Mac app never handles card data.
 
 ---
 

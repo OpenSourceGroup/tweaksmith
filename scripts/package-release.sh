@@ -181,7 +181,7 @@ cat > "${DIST}/KNOWN_LIMITATIONS.md" <<EOF
 # Known limitations — Tweaksmith ${VERSION}
 
 1. **Signing:** mode=\`${SIGNING_MODE}\`; notarized=\`${NOTARIZED}\`. If not Developer ID + notarized, **do not** publish as the official Gatekeeper download.
-2. **No full Xcode.app** on some bootstrap hosts — packaging uses SwiftPM \`.app\` wrap, not \`xcodebuild\` archive.
+2. Packaging uses SwiftPM \`.app\` wrap (not \`xcodebuild\` archive); CI/local hosts without Xcode.app skip XCTest and use smoke.
 3. **NSConvolutionOverride2** may be absent; UI must not expose unsupported overrides.
 4. **Window Corners** may require logout/restart; preview is illustrative.
 5. **Support payments** may be Razorpay TEST-only until production cut-over.
