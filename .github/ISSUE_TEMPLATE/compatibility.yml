@@ -1,0 +1,60 @@
+name: Compatibility
+description: macOS version, hardware, or module conflict
+title: "[Compatibility]: "
+labels: ["compatibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        See `docs/COMPATIBILITY.md`. Window Corners may require restart; undocumented keys carry risk.
+
+  - type: input
+    id: module
+    attributes:
+      label: Module name
+      placeholder: Window Corners
+    validations:
+      required: true
+
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "26.x"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: chip
+    attributes:
+      label: Chip
+      options:
+        - Apple Silicon
+        - Intel
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior
+    attributes:
+      label: What happens?
+    validations:
+      required: true
+
+  - type: textarea
+    id: keys
+    attributes:
+      label: Preference keys involved (if known)
+
+  - type: checkboxes
+    id: restore
+    attributes:
+      label: Restore
+      options:
+        - label: Restore to macOS Default fixed display issue
+        - label: Restore did not help
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context

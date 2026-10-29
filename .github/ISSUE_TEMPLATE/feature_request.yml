@@ -1,0 +1,63 @@
+name: Feature request
+description: Propose a new tweak or product improvement (requires roadmap alignment)
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read `docs/PRODUCT_PRINCIPLES.md` first. We do not ship telemetry, accounts, paid unlocks, or SIP/Gatekeeper bypasses.
+        Label hints: `now`, `next`, `later`, `experimental`, `wont-build` (maintainers set priority).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / user story
+      placeholder: As a Mac user, I want…
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: reversibility
+    attributes:
+      label: Reversibility (Settings Engine restore paths)
+      description: How does BACKUP/APPLY/VERIFY/RESTORE apply?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk estimate
+      options:
+        - LOW
+        - MEDIUM
+        - HIGH
+        - UNVERIFIED
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: principles
+    attributes:
+      label: Principles check
+      options:
+        - label: No telemetry, ads, or accounts
+          required: true
+        - label: No SIP/Gatekeeper disable or kexts
+          required: true
+        - label: Voluntary support only — never pay-to-unlock
+          required: true
+
+  - type: textarea
+    id: research
+    attributes:
+      label: Research link (if from inbox)
+      description: Path or issue for `research/inbox/` candidate

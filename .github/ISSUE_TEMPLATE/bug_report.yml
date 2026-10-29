@@ -1,0 +1,70 @@
+name: Bug report
+description: Something broken in Tweaksmith or a module
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Include steps to reproduce. If preferences are involved, note whether Restore fixed the issue.
+
+  - type: input
+    id: version
+    attributes:
+      label: Tweaksmith version
+      placeholder: 0.1.0-rc.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: chip
+    attributes:
+      label: Mac chip
+      options:
+        - Apple Silicon
+        - Intel
+    validations:
+      required: true
+
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version
+      placeholder: "26.x (Tahoe)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs / screenshots
+      description: Do not paste secrets or full preference dumps with personal data
+
+  - type: checkboxes
+    id: restore
+    attributes:
+      label: Recovery
+      options:
+        - label: Restore Previous / Restore All fixed the issue
+        - label: Issue persists after restore

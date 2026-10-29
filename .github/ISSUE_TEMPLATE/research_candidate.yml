@@ -1,0 +1,65 @@
+name: Research candidate
+description: Validated idea from research/inbox for roadmap decision
+title: "[Research]: "
+labels: ["research"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Link Grok report in `research/inbox/` or `research/reports/`. Maintainers assign `now` / `next` / `later` / `experimental` / `wont-build`.
+
+  - type: input
+    id: inbox
+    attributes:
+      label: Inbox report path or URL
+      placeholder: research/inbox/2026-01-15-window-corners-followup.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: One-line summary
+    validations:
+      required: true
+
+  - type: input
+    id: score
+    attributes:
+      label: Total score (/100)
+      placeholder: "72"
+
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Risk
+      options:
+        - LOW
+        - MEDIUM
+        - HIGH
+        - UNVERIFIED
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence (links verified by human)
+    validations:
+      required: true
+
+  - type: textarea
+    id: rejection
+    attributes:
+      label: Why not forbidden (SIP/kext/telemetry/paywall)
+
+  - type: dropdown
+    id: bucket
+    attributes:
+      label: Proposed roadmap bucket
+      options:
+        - now
+        - next
+        - later
+        - experimental
+        - wont-build

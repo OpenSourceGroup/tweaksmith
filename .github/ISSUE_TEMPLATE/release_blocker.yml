@@ -1,0 +1,50 @@
+name: Release blocker
+description: Blocks RC or production until resolved
+title: "[Release blocker]: "
+labels: ["release-blocker"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Tie to `docs/RELEASE_GATE.md` section. Production release requires gate verdict ≠ BLOCKED.
+
+  - type: input
+    id: version
+    attributes:
+      label: Target release
+      placeholder: 0.1.0-rc.1 or 0.1.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gate_section
+    attributes:
+      label: Gate section
+      options:
+        - Settings Engine
+        - Window Corners
+        - Support UX
+        - CI & secrets hygiene
+        - Compatibility & docs
+        - Release artifacts
+    validations:
+      required: true
+
+  - type: textarea
+    id: blocker
+    attributes:
+      label: What blocks release?
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction / evidence
+    validations:
+      required: true
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround (if READY WITH KNOWN LIMITATIONS)

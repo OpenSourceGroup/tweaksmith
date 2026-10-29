@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Semver release (e.g. 0.1.0)
+        required: true
+        type: string
+      gate_verdict:
+        description: READY or READY WITH KNOWN LIMITATIONS (must not be BLOCKED)
+        required: true
+        type: choice
+        options:
+          - READY
+          - READY WITH KNOWN LIMITATIONS
+
+permissions:
+  contents: write
+
+jobs:
+  production:
+    runs-on: macos-15
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Block if gate is BLOCKED
+        run: |
+          if [[ "${{ inputs.gate_verdict }}" == "BLOCKED" ]]; then
+            echo "BLOCKED verdict cannot ship."
+            exit 1
+          fi
+          echo "Gate verdict: ${{ inputs.gate_verdict }}"
+
+      - name: Verify CHANGELOG mentions version
+        run: |
+          grep -q "${{ inputs.version }}" CHANGELOG.md || {
+            echo "Add ${{ inputs.version }} section to CHANGELOG.md"
+            exit 1
+          }
+
+      - name: Build release (placeholder)
+        run: |
+          mkdir -p dist
+          echo "Tweaksmith ${{ inputs.version }}" > dist/README.txt
+          echo "Official Kamyab build — replace with notarized .app/.dmg"
+
+      - name: Sign and notarize if secrets present
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          if [[ -z "${APPLE_ID:-}" || -z "${APPLE_CERTIFICATE_BASE64:-}" ]]; then
+            echo "Signing secrets not configured — aborting official production artifact."
+            exit 1
+          fi
+          echo "Sign + notarize + staple — no secret logging."
+
+      - name: Checksums
+        run: |
+          cd dist
+          shasum -a 256 * > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: Tweaksmith v${{ inputs.version }}
+          prerelease: false
+          body: |
+            Gate verdict: ${{ inputs.gate_verdict }}
+            See CHANGELOG.md and docs/COMPATIBILITY.md for known limitations.
+          files: dist/*
+
+      - name: Website reminder
+        run: |
+          echo "Update kamyab.co.in download links for v${{ inputs.version }} (manual step)."

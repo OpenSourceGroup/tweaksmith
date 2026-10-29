@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security report
+    url: https://github.com/KamyabInfotech/tweaksmith/security/policy
+    about: Report vulnerabilities privately — see SECURITY.md (security@kamyab.co.in)
+  - name: Product principles
+    url: https://github.com/KamyabInfotech/tweaksmith/blob/main/docs/PRODUCT_PRINCIPLES.md
+    about: Non-negotiables before filing features
