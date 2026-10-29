@@ -20,8 +20,6 @@ Read the full contract: [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.m
 
 ## Status
 
-Bootstrap documentation and GitHub ops are in place. Application source lands separately under this tree.
-
 **v0.1 target:** Settings Engine + Window Corners + Support UX + website support pages.
 
 ---
@@ -32,7 +30,8 @@ Bootstrap documentation and GitHub ops are in place. Application source lands se
 |-----|---------|
 | [Architecture](docs/ARCHITECTURE.md) | App structure & Settings Engine |
 | [Compatibility](docs/COMPATIBILITY.md) | OS support & Window Corners notes |
-| [Roadmap](docs/ROADMAP.md) | NOW / NEXT / LATER buckets |
+| [Development](docs/DEVELOPMENT.md) | Engine rules, tests, local commands |
+| [Roadmap](docs/ROADMAP.md) | Now / Next / Later |
 | [Contributing](CONTRIBUTING.md) | PR flow & tests |
 | [Security](SECURITY.md) | Vulnerability reporting |
 | [Release process](docs/RELEASE_PROCESS.md) | RC → gate → production |
@@ -43,21 +42,15 @@ Bootstrap documentation and GitHub ops are in place. Application source lands se
 
 ```bash
 ./scripts/bootstrap-check.sh
+./scripts/run-smoke.sh
 ./scripts/release-gate.sh   # human checklist — see docs/RELEASE_GATE.md
+./scripts/package-release.sh 0.1.0-rc.1   # SwiftPM .app zip + SHA-256 under dist/
 ```
-
-When the Xcode project or `Package.swift` exists:
 
 ```bash
-swift test
+swift test   # needs Xcode/XCTest; CLT hosts use run-smoke.sh
 # tests must use isolated preference domains — never mutate global runner prefs
 ```
-
----
-
-## Research
-
-Grok reports go to `research/inbox/` using [`docs/RESEARCH_AGENT.md`](docs/RESEARCH_AGENT.md). Human validation required before engineering.
 
 ---
 
@@ -70,4 +63,5 @@ Code: [MIT](LICENSE). Name and official builds are Kamyab-controlled; see PRODUC
 ## Contact
 
 - Website: [kamyab.co.in](https://kamyab.co.in) (never kamyab.in)
+- Product: [kamyab.co.in/tweaksmith](https://kamyab.co.in/tweaksmith)
 - Security: security@kamyab.co.in — see [SECURITY.md](SECURITY.md)

@@ -1,46 +1,41 @@
 # GitHub operations — Tweaksmith
 
-## Repositories
+## Repository
 
 | Repo | Visibility | URL |
 |------|------------|-----|
 | `KamyabInfotech/tweaksmith` | Public | https://github.com/KamyabInfotech/tweaksmith |
-| `KamyabInfotech/tweaksmith-intelligence` | Private | https://github.com/KamyabInfotech/tweaksmith-intelligence |
 
 Official product site is **https://kamyab.co.in/tweaksmith** — not GitHub Pages.
 
-Canonical distribution for official builds: **GitHub Releases** on the public repo (version, notes, signed/notarized archive, SHA-256 checksum, compatibility, limitations).
+Canonical distribution for official builds: **GitHub Releases** on this repo (version, notes, signed/notarized archive, SHA-256 checksum, compatibility, limitations).
 
-## Labels (mandatory)
+## Labels
 
-`research`, `needs-verification`, `validated`, `approved`, `ready`, `in-progress`, `enhancement`, `experimental`, `compatibility`, `bug`, `security`, `release-blocker`, `released`, `wontfix`
-
-Plus backlog: `now`, `next`, `later`, `documentation`, `good-first-issue`.
-
-**Never** auto-move research → approved. Human approval required.
+See [`.github/LABELS.md`](../.github/LABELS.md). Conventional OSS labels plus roadmap: `now`, `next`, `later`, `experimental`, `wont-build`, `inbox`.
 
 ## Issue templates
 
-Bug Report, Feature Request, Compatibility Issue, Research Candidate, Release Blocker (under `.github/ISSUE_TEMPLATE/`).
+Bug Report, Feature Request, Compatibility Issue, Release Blocker (under `.github/ISSUE_TEMPLATE/`).
 
 ## Project board
 
-**Active fallback:** labels + milestones (no Projects v2). Column map: [`docs/PROJECT_BOARD.md`](PROJECT_BOARD.md).
+**Active fallback:** labels + milestones. Column map: [`docs/PROJECT_BOARD.md`](PROJECT_BOARD.md).
 
 Desired Projects v2 statuses (when a token has `project` / `read:project`):
 
-Inbox · NOW · NEXT · LATER · EXPERIMENTAL · WONT BUILD · In Progress · QA · Released
+Inbox · Now · Next · Later · Experimental · Wont build · In Progress · QA · Released
 
 ```bash
 gh project create --owner KamyabInfotech --title "Tweaksmith"
 # Then add Status field options matching the columns above; link repo tweaksmith
 ```
 
-Machine note: GitHub OAuth in macOS **osxkeychain** (git credential for `github.com`) covers `repo` + `workflow` but **not** `project` / `read:project` / `read:org`. Prefer `export GH_TOKEN="$(~/.cursor/secrets/gh-token-from-osxkeychain.sh)"` for `gh api` (do not embed tokens in workflows). HTTPS remotes use the same credential helper.
+For scripted `gh api` calls, use a local credential helper or a scoped PAT — do not embed tokens in workflows or the repo.
 
-## Branch protection (`main`) — applied soft
+## Branch protection (`main`) — soft
 
-Goals: PR-based changes; no force-push; no deletion; optional CI; admin override for solo maintainer.
+Goals: no force-push; no deletion; optional required CI; admin override for solo maintainer.
 
 ```bash
 gh api -X PUT repos/KamyabInfotech/tweaksmith/branches/main/protection \
@@ -56,15 +51,12 @@ gh api -X PUT repos/KamyabInfotech/tweaksmith/branches/main/protection \
 EOF
 ```
 
-After CI is green, optionally set `required_status_checks.contexts` to `["CI"]` (or the exact job name). Keep `enforce_admins: false` so solo work stays usable.
-
-## Intelligence repo
-
-Private only. Native app **must not** depend on it. No payment/signing/Grok secrets — placeholders only.
+After CI is green, optionally set `required_status_checks.contexts` to `["test"]` (exact job name). Keep `enforce_admins: false` so solo work stays usable.
 
 ## Human actions remaining
 
-1. Optional: create org Projects v2 **Tweaksmith** when a PAT/App token with `project` + `read:project` is available (board fallback already live — see `PROJECT_BOARD.md`)
-2. Add Apple notarization secrets to repo/org Actions when ready  
-3. Install full Xcode for `.app` archive on signing Mac  
-4. Razorpay TEST secrets on staging worker (see Kamyab `docs/TWEAKSMITH_SUPPORT.md`)
+1. Optional: create org Projects v2 **Tweaksmith** when a PAT/App token with `project` + `read:project` is available
+2. Add Apple notarization secrets to repo/org Actions when ready (`APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`, `APPLE_CERTIFICATE_BASE64`, `APPLE_CERTIFICATE_PASSWORD`)
+3. Install full Xcode (or use Actions macos + secrets) so `package-release.sh` can Developer ID–sign + notarize
+4. Razorpay TEST secrets on staging worker before enabling preview checkout
+5. Promote draft RC release only after notarized artifact exists — unsigned zips are **not** Gatekeeper-public

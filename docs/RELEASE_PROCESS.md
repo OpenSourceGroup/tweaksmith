@@ -24,8 +24,9 @@ feature branch → PR → main (CI green)
 3. Trigger **Release Candidate** workflow (`.github/workflows/release-candidate.yml`):
    - Input version (e.g. `0.1.0-rc.1`)
    - Creates tag `v0.1.0-rc.1`
-   - Builds artifact; signs/notarizes **if** Apple secrets configured
-   - Uploads checksums (SHA-256); never logs secrets
+   - Runs `scripts/package-release.sh` (SwiftPM `.app` wrap; `xcodebuild` optional when Xcode.app exists)
+   - Signs/notarizes **if** Apple secrets configured; otherwise UNSIGNED/AD-HOC zip marked not for Gatekeeper
+   - Uploads checksums (SHA-256); never logs secrets; draft pre-release when unsigned
 4. Run **Release Gate** checklist; record verdict in RC issue
 5. QA on Apple Silicon + Tahoe 26 hardware
 
@@ -99,6 +100,6 @@ If secrets missing, workflows produce unsigned artifacts for local dev only—no
 
 ## Backlog columns
 
-Engineering priority uses issue labels / milestones (Projects v2 optional later). Map: [`PROJECT_BOARD.md`](PROJECT_BOARD.md) — Inbox → NOW → NEXT → LATER → EXPERIMENTAL → WONT BUILD → In Progress → QA → Released. Research never auto-promotes to approved.
+Engineering priority uses issue labels / milestones (Projects v2 optional later). Map: [`PROJECT_BOARD.md`](PROJECT_BOARD.md) — Inbox → Now → Next → Later → Experimental → Wont build → In Progress → QA → Released.
 
 See also: `RELEASE_GATE.md`, `PRODUCT_PRINCIPLES.md`.

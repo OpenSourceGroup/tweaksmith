@@ -57,7 +57,7 @@ body:
           required: true
 
   - type: textarea
-    id: research
+    id: context
     attributes:
-      label: Research link (if from inbox)
-      description: Path or issue for `research/inbox/` candidate
+      label: Extra context (optional)
+      description: Links to discussions, forum threads, or related issues

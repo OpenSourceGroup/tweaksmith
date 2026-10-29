@@ -43,5 +43,9 @@ jobs:
 
       - name: Static hygiene
         run: |
-          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API" --glob '!docs/**' --glob '!.github/**' . || true
-          echo "Hygiene scan complete (docs may mention forbidden patterns as warnings)."
+          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' . || true
+          ! test -d research
+          ! test -f docs/RESEARCH_AGENT.md
+          ! test -f docs/CURSOR_ENGINEERING_AGENT.md
+          ! test -f .github/workflows/research-intake.yml
+          echo "Hygiene scan complete."

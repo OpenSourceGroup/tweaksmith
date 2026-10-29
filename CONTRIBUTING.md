@@ -6,17 +6,20 @@ Thank you for helping make Macs more personal—safely and reversibly.
 
 1. Read [`docs/PRODUCT_PRINCIPLES.md`](docs/PRODUCT_PRINCIPLES.md)
 2. Check [`docs/ROADMAP.md`](docs/ROADMAP.md) and open issues for `now` / approved work
-3. For ideas from Grok/research, follow [`docs/RESEARCH_AGENT.md`](docs/RESEARCH_AGENT.md) — no implementation until approved
+3. Skim [`docs/DEVELOPMENT.md`](docs/DEVELOPMENT.md) for Settings Engine and test rules
 
 ## Development setup
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/KamyabInfotech/tweaksmith.git
 cd tweaksmith
 ./scripts/bootstrap-check.sh
+./scripts/run-smoke.sh
 ```
 
-Build/test commands appear when `Package.swift` or an Xcode project is added.
+```bash
+swift test   # requires full Xcode; otherwise use run-smoke.sh
+```
 
 ## Pull requests
 
@@ -34,7 +37,7 @@ Build/test commands appear when `Package.swift` or an Xcode project is added.
 
 ## Labels / board
 
-See [`.github/LABELS.md`](.github/LABELS.md) and [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md). Maintainers set roadmap labels (`now` / `next` / `later` / …). Do not auto-promote `research` → approved.
+See [`.github/LABELS.md`](.github/LABELS.md) and [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md). Maintainers set roadmap labels (`now` / `next` / `later` / …).
 
 ## Release
 

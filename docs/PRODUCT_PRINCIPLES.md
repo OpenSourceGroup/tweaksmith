@@ -102,4 +102,4 @@ External changes (Terminal, other apps, macOS updates) are detected where possib
 
 ## Engineering alignment
 
-Agents and contributors must read this document before feature work. If a proposal conflicts with any row in **Non-negotiables**, stop and escalate via issue—not implementation.
+Contributors must read this document before feature work. If a proposal conflicts with any row in **Non-negotiables**, stop and escalate via issue—not implementation.
