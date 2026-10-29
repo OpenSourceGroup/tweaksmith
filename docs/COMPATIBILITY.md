@@ -15,38 +15,59 @@ Tweaksmith targets **macOS Tahoe (26)** and later. **Apple Silicon** is the prim
 
 ---
 
+## Evidence — Window Corners (2026-10-29)
+
+Host: macOS **27.2** (Build **26B123**, Tahoe 26 family), **arm64**, Apple **M5 Pro**. Full Xcode.app: **absent** (CLT only). Developer ID identities: **0**.
+
+| Check | Result | Notes |
+|-------|--------|--------|
+| Key `NSConvolutionOverride1` | Present (float) | Observed baseline **6.0** before QA; restored to **6.0** after |
+| Key `NSConvolutionOverride2` | **Absent** | Not exposed in UI |
+| Preset write 4 / 8 / 10 | Read-back matches | Via `defaults write -g` |
+| Restore previous (write prior value) | PASS | |
+| Reset default (delete key) | PASS — key absent | |
+| Re-create after absent | PASS | |
+| External change (out-of-band write) | Detectable by engine smoke | Smoke: `detect external change` |
+| Restart / logout | **Guidance only** | Visual effect may need quit apps / logout / restart; not forced in QA |
+| Sample apps visual | Manual / incomplete | Finder, System Settings, Safari, Notes/TextEdit, one 3rd-party, custom-chrome: **logout/restart may be required**; in-app preview is illustrative |
+| Isolated-domain smoke | PASS | `./scripts/run-smoke.sh` |
+
+Risk: **MEDIUM** (undocumented preference). Always reversible via Settings Engine restore paths.
+
+---
+
 ## Window Corners module
 
 ### NSConvolutionOverride1
 
-Window corner rounding on recent macOS releases interacts with system rendering pipelines. Tweaksmith’s Window Corners module may write preferences related to **convolution / corner override** behavior (internally referenced as **NSConvolutionOverride1** in engineering docs).
-
 | Topic | Notes |
 |-------|--------|
-| **Documentation** | Preference may be semi-documented; treat as **MEDIUM** risk |
-| **Revert** | Always available via Settings Engine restore paths |
-| **Restart** | Full logout or restart may be required for visual effect to apply or revert—UI must state this before apply |
-| **External drift** | macOS updates or other tools may change values; external change detection applies |
+| **Documentation** | Semi-documented / undocumented — treat as **MEDIUM** risk |
+| **Revert** | Restore Previous / Original / Reset to macOS Default |
+| **Restart** | Full logout or restart may be required — UI must state this before apply |
+| **External drift** | macOS updates or other tools may change values |
 
-### Visual verification
+### NSConvolutionOverride2
 
-Validate on:
+**Not exposed.** Absent on validation host. Do not surface in product UI until independently confirmed.
+
+### Visual verification checklist
 
 - Light and dark appearance
 - Multiple displays (if available)
-- Stage Manager on/off if user reports conflicts (document in release notes)
+- Stage Manager on/off if user reports conflicts
 
 ---
 
 ## Undocumented preference keys
 
-Any key not listed in Apple’s public documentation is **HIGH** or **UNVERIFIED** risk until validated on a test VM.
+Any key not listed in Apple’s public documentation is **HIGH** or **UNVERIFIED** until validated.
 
 Policy:
 
 - Document key name and observed behavior in module spec
 - Default module compatibility badge to MEDIUM or HIGH
-- Block **Apply** on unsupported OS branches via `CompatibilityService`
+- Block **Apply** on unsupported OS branches via compatibility gating
 
 ---
 
@@ -57,6 +78,7 @@ Writing to global domains affects the whole user session. Tweaksmith:
 - Backs up before first write
 - Never writes from CI/tests to production domains
 - Lists affected domains in module detail UI
+- Verifies read-back after apply; surfaces verification failures (no silent partial apply)
 
 ---
 
@@ -68,13 +90,11 @@ Writing to global domains affects the whole user session. Tweaksmith:
 | Minor `defaults` toggles | Sometimes immediate; still verify with READ |
 | macOS point release upgrade | Re-run compatibility; user may need Restore All |
 
-Always prefer honest copy over promising instant changes.
-
 ---
 
 ## Forbidden environments
 
-Not supported—issues may be closed as `wont-build`:
+Not supported — issues may be closed as `wont-build`:
 
 - SIP disabled
 - Gatekeeper disabled globally

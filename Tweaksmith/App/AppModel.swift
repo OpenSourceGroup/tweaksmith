@@ -103,6 +103,11 @@ public final class AppModel: ObservableObject {
 
     func applyWindowCorners() {
         do {
+            if windowCornersPreset == .custom,
+               WindowCornersModule.sanitiseRadius(windowCornersRadius) == nil {
+                statusMessage = "Invalid corner radius. Enter a finite value between \(Int(WindowCornersModule.minRadius)) and \(Int(WindowCornersModule.maxRadius))."
+                return
+            }
             let report = CompatibilityChecker().evaluate(
                 moduleID: windowCorners.id,
                 minimumMajor: windowCorners.minimumMacOSMajor,
@@ -116,13 +121,19 @@ public final class AppModel: ObservableObject {
             if !report.allowed {
                 statusMessage = "Compatibility warning: \(report.notes.joined(separator: " "))"
             }
-            _ = try engine.apply(plan, requireCompatibility: nil)
+            let result = try engine.apply(plan, requireCompatibility: nil)
+            guard result.verified else {
+                statusMessage = "Apply wrote values but verification failed — use Restore Previous."
+                engineEvents = engine.recentEvents()
+                return
+            }
             support.recordSuccessfulAction()
             statusMessage = "Applied \(windowCornersPreset.title). Restart apps or log out for full effect. Preview is illustrative only."
             engineEvents = engine.recentEvents()
             maybeOfferSupport()
         } catch {
             statusMessage = "Apply failed: \(error.localizedDescription)"
+            engineEvents = engine.recentEvents()
         }
     }
 

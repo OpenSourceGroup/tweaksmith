@@ -41,13 +41,7 @@ jobs:
             exit 1
           }
 
-      - name: Build release (placeholder)
-        run: |
-          mkdir -p dist
-          echo "Tweaksmith ${{ inputs.version }}" > dist/README.txt
-          echo "Official Kamyab build — replace with notarized .app/.dmg"
-
-      - name: Sign and notarize if secrets present
+      - name: Package release artifact
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
@@ -55,17 +49,14 @@ jobs:
           APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
-          if [[ -z "${APPLE_ID:-}" || -z "${APPLE_CERTIFICATE_BASE64:-}" ]]; then
+          chmod +x scripts/package-release.sh scripts/run-smoke.sh
+          ./scripts/run-smoke.sh
+          ./scripts/package-release.sh "${{ inputs.version }}"
+          if ! grep -q 'gatekeeper_public_ok=yes' dist/ARTIFACT_META.txt; then
             echo "Signing secrets not configured — aborting official production artifact."
+            echo "Use Release Candidate draft for UNSIGNED builds; do not publish Gatekeeper channel."
             exit 1
           fi
-          echo "Sign + notarize + staple — no secret logging."
-
-      - name: Checksums
-        run: |
-          cd dist
-          shasum -a 256 * > SHA256SUMS.txt
-          cat SHA256SUMS.txt
 
       - name: GitHub Release
         uses: softprops/action-gh-release@v2
@@ -73,10 +64,18 @@ jobs:
           tag_name: v${{ inputs.version }}
           name: Tweaksmith v${{ inputs.version }}
           prerelease: false
+          draft: false
           body: |
             Gate verdict: ${{ inputs.gate_verdict }}
-            See CHANGELOG.md and docs/COMPATIBILITY.md for known limitations.
-          files: dist/*
+
+            See attached RELEASE_NOTES.md, COMPATIBILITY_NOTES.md, and CHANGELOG.md.
+          files: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+            dist/RELEASE_NOTES.md
+            dist/COMPATIBILITY_NOTES.md
+            dist/KNOWN_LIMITATIONS.md
+            dist/ARTIFACT_META.txt
 
       - name: Website reminder
         run: |

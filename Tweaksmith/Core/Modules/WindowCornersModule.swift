@@ -72,6 +72,17 @@ public struct WindowCornersModule: TweakModule {
         try preferenceKeys.map { try backend.read($0) }
     }
 
+    /// Allowed custom radius range (points). Non-finite / out-of-range values are rejected by `sanitiseRadius`.
+    public static let minRadius: Double = 0
+    public static let maxRadius: Double = 40
+
+    /// Returns a finite radius in `[minRadius, maxRadius]`, or `nil` if the input cannot be used.
+    public static func sanitiseRadius(_ value: Double?) -> Double? {
+        guard let value, value.isFinite else { return nil }
+        if value < minRadius || value > maxRadius { return nil }
+        return value
+    }
+
     public func plan(preset: Preset, customRadius: Double? = nil) -> ApplyPlan {
         let key = preferenceKeys[0]
         let entry: PreferenceEntry
@@ -79,7 +90,7 @@ public struct WindowCornersModule: TweakModule {
         case .systemDefault:
             entry = PreferenceEntry(key: key, value: .null, existed: false)
         case .custom:
-            let r = customRadius ?? 8
+            let r = Self.sanitiseRadius(customRadius) ?? 8
             entry = PreferenceEntry(key: key, value: .double(r), existed: true)
         default:
             entry = PreferenceEntry(key: key, value: .double(preset.radius!), existed: true)

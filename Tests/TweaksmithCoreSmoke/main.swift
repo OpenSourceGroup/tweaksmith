@@ -110,6 +110,12 @@ enum Smoke {
         expect(registry.module(id: "window-corners") != nil, "window-corners registered", failures: &failures)
         expect(ModuleRegistry.plannedCatalog().contains { $0.status == .planned }, "planned catalog non-empty", failures: &failures)
         expect(WindowCornersModule.override2ValidationNote().contains("Override2"), "override2 note present", failures: &failures)
+        expect(WindowCornersModule.sanitiseRadius(8) == 8, "radius 8 ok", failures: &failures)
+        expect(WindowCornersModule.sanitiseRadius(-1) == nil, "radius negative rejected", failures: &failures)
+        expect(WindowCornersModule.sanitiseRadius(.nan) == nil, "radius nan rejected", failures: &failures)
+        expect(WindowCornersModule.sanitiseRadius(999) == nil, "radius huge rejected", failures: &failures)
+        let plan = WindowCornersModule(domain: domain).plan(preset: .custom, customRadius: .infinity)
+        expect(plan.desired.first?.value.doubleValue == 8, "invalid custom falls back to 8", failures: &failures)
     }
 }
 

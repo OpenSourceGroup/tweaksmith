@@ -16,3 +16,5 @@ AuthKey_*.p8
 **/Secrets.plist
 **/GoogleService-Info.plist
 .kpcc-pending-syncs.json
+/dist/
+*.keychain-db
