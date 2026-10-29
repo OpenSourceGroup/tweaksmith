@@ -23,17 +23,20 @@ Plus backlog: `now`, `next`, `later`, `documentation`, `good-first-issue`.
 
 Bug Report, Feature Request, Compatibility Issue, Research Candidate, Release Blocker (under `.github/ISSUE_TEMPLATE/`).
 
-## Project board (manual — token needs `project` scope)
+## Project board
 
-Create **Tweaksmith** project with statuses/columns:
+**Active fallback:** labels + milestones (no Projects v2). Column map: [`docs/PROJECT_BOARD.md`](PROJECT_BOARD.md).
+
+Desired Projects v2 statuses (when a token has `project` / `read:project`):
 
 Inbox · NOW · NEXT · LATER · EXPERIMENTAL · WONT BUILD · In Progress · QA · Released
 
 ```bash
-# After: gh auth refresh -s project,read:project
 gh project create --owner KamyabInfotech --title "Tweaksmith"
-# Then add Status field options matching the columns above
+# Then add Status field options matching the columns above; link repo tweaksmith
 ```
+
+Machine note: GitHub OAuth in macOS **osxkeychain** (git credential for `github.com`) covers `repo` + `workflow` but **not** `project` / `read:project` / `read:org`. Prefer `export GH_TOKEN="$(~/.cursor/secrets/gh-token-from-osxkeychain.sh)"` for `gh api` (do not embed tokens in workflows). HTTPS remotes use the same credential helper.
 
 ## Branch protection (`main`) — applied soft
 
@@ -61,17 +64,7 @@ Private only. Native app **must not** depend on it. No payment/signing/Grok secr
 
 ## Human actions remaining
 
-1. **Push Actions workflows** (blocked once by OAuth missing `workflow` scope):
-   ```bash
-   gh auth refresh -h github.com -s workflow,repo,read:org
-   cd /Users/aj/Documents/CU-TweakSmith-Mac/tweaksmith
-   git add .github/workflows
-   git commit -m "Add CI, research-intake, release-candidate, and release workflows"
-   git push
-   ```
-   Local workflow files remain on disk under `.github/workflows/` even if not yet on `main`.
-2. `gh auth refresh -s project,read:project` → create Project board (Inbox/NOW/NEXT/…)  
-3. Add Apple notarization secrets to repo/org Actions when ready  
-4. Install full Xcode for `.app` archive on signing Mac  
-5. Confirm branch protection UI (force-push/deletions disabled; CI required checks optional after first green run)  
-6. Razorpay TEST secrets on staging worker (see Kamyab `docs/TWEAKSMITH_SUPPORT.md`)
+1. Optional: create org Projects v2 **Tweaksmith** when a PAT/App token with `project` + `read:project` is available (board fallback already live — see `PROJECT_BOARD.md`)
+2. Add Apple notarization secrets to repo/org Actions when ready  
+3. Install full Xcode for `.app` archive on signing Mac  
+4. Razorpay TEST secrets on staging worker (see Kamyab `docs/TWEAKSMITH_SUPPORT.md`)

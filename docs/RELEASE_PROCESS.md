@@ -95,4 +95,10 @@ If secrets missing, workflows produce unsigned artifacts for local dev only—no
 
 **Production** workflow must not complete without human approval in `production` environment—no fully automated ship to users.
 
+---
+
+## Backlog columns
+
+Engineering priority uses issue labels / milestones (Projects v2 optional later). Map: [`PROJECT_BOARD.md`](PROJECT_BOARD.md) — Inbox → NOW → NEXT → LATER → EXPERIMENTAL → WONT BUILD → In Progress → QA → Released. Research never auto-promotes to approved.
+
 See also: `RELEASE_GATE.md`, `PRODUCT_PRINCIPLES.md`.

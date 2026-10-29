@@ -1,6 +1,6 @@
 # Roadmap
 
-Buckets align with GitHub labels: `now`, `next`, `later`, `experimental`, `wont-build`.
+Buckets align with GitHub labels: `now`, `next`, `later`, `experimental`, `wont-build`. Full board map (labels + milestones): [`PROJECT_BOARD.md`](PROJECT_BOARD.md).
 
 **Tagline:** Make your Mac yours.
 

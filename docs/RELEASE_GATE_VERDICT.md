@@ -27,7 +27,7 @@
 2. **`NSConvolutionOverride2`** absent on validation host — not exposed in UI (correct).
 3. **Undocumented preference** — Window Corners risk MEDIUM; restart/log-out may be required; preview is illustrative only.
 4. **Razorpay TEST only** — production secrets and webhook cut-over need human approval (`docs` on kamyab site: `TWEAKSMITH_SUPPORT.md`).
-5. **GitHub Project board** not created — token lacks `project` scope; create manually.
+5. **GitHub Projects v2** not created — machine token lacks `project`/`read:project`; **label+milestone board** live (see `docs/PROJECT_BOARD.md`).
 6. **Branch protection** applied soft; CI check name must match after first green run.
 
 ## Blockers for public v0.1 “official” release (not RC)

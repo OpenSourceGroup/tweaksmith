@@ -32,9 +32,9 @@ Build/test commands appear when `Package.swift` or an Xcode project is added.
 - Swift 6 / SwiftUI conventions matching existing files
 - MIT header on new source files: `Copyright (c) 2026 Kamyab Infotech Private Limited`
 
-## Labels
+## Labels / board
 
-See [`.github/LABELS.md`](.github/LABELS.md). Maintainers set roadmap labels.
+See [`.github/LABELS.md`](.github/LABELS.md) and [`docs/PROJECT_BOARD.md`](docs/PROJECT_BOARD.md). Maintainers set roadmap labels (`now` / `next` / `later` / …). Do not auto-promote `research` → approved.
 
 ## Release
 
