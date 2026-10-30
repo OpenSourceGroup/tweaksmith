@@ -59,8 +59,10 @@ feature branch → PR → main (CI green)
 ## Versioning
 
 - SemVer: `MAJOR.MINOR.PATCH`
-- Pre-release: `-rc.N`
-- Git tags: `v0.1.0-rc.1`, `v0.1.0`
+- Developer Preview: `-dev.N` (e.g. `v0.1.0-dev.2`)
+- Release candidate: `-rc.N`
+- Stable: plain `v0.1.0` (signed/notarized only)
+- Never silently replace binaries on an existing release — bump the tag (see [`RELEASE_CHANNELS.md`](RELEASE_CHANNELS.md))
 
 ---
 

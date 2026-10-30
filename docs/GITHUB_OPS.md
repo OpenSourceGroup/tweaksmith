@@ -18,7 +18,15 @@ See [`.github/LABELS.md`](../.github/LABELS.md). Conventional OSS labels plus ro
 
 ## Issue templates
 
-Bug Report, Feature Request, Compatibility Issue, Release Blocker (under `.github/ISSUE_TEMPLATE/`).
+Bug report, Feature request, Compatibility report, Release blocker (under `.github/ISSUE_TEMPLATE/`). No serial / Apple ID fields; redact PII.
+
+## Discussions
+
+Enabled on the public repo. Prefer a small set of categories: **General**, **Ideas**, **Help**, **Testing Feedback** (plus GitHub’s Announcements if present). Avoid category sprawl. Category create/rename is Settings UI (API unavailable to this token) — keep Q&A as Help until renamed.
+
+## Commit hygiene (forward-looking)
+
+Do not add AI/tool `Co-authored-by` trailers on new public commits. Do not rewrite history for past trailers.
 
 ## Project board
 

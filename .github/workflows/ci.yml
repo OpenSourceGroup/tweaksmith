@@ -48,5 +48,8 @@ jobs:
           ! test -d research
           ! test -f docs/RESEARCH_AGENT.md
           ! test -f docs/CURSOR_ENGINEERING_AGENT.md
+          ! test -f docs/tweaksmith-intelligence.md
+          ! test -d tweaksmith-intelligence
           ! test -f .github/workflows/research-intake.yml
+          ! rg -n -i 'tweaksmith-intelligence|research agent|private intelligence' --glob '!docs/**' --glob '!.github/**' --glob '!.git/**' . || true
           echo "Hygiene scan complete."

@@ -1,12 +1,13 @@
-name: Compatibility
-description: macOS version, hardware, or module conflict
+name: Compatibility report
+description: macOS version, hardware, or module conflict (no serial / Apple ID)
 title: "[Compatibility]: "
 labels: ["compatibility"]
 body:
   - type: markdown
     attributes:
       value: |
-        See `docs/COMPATIBILITY.md`. Window Corners may require restart; undocumented keys carry risk.
+        See `docs/COMPATIBILITY.md` and `docs/INTERNAL_TESTING.md`.
+        **Do not** include serial numbers, Apple ID, full home paths, or payment details.
 
   - type: input
     id: module
@@ -17,10 +18,18 @@ body:
       required: true
 
   - type: input
+    id: version
+    attributes:
+      label: Tweaksmith version / tag
+      placeholder: v0.1.0-dev.2
+    validations:
+      required: true
+
+  - type: input
     id: macos
     attributes:
       label: macOS version
-      placeholder: "26.x"
+      placeholder: "26.x or 27.x (build optional)"
     validations:
       required: true
 
@@ -31,6 +40,7 @@ body:
       options:
         - Apple Silicon
         - Intel
+        - Unknown
     validations:
       required: true
 
@@ -41,20 +51,17 @@ body:
     validations:
       required: true
 
-  - type: textarea
-    id: keys
-    attributes:
-      label: Preference keys involved (if known)
-
   - type: checkboxes
     id: restore
     attributes:
       label: Restore
       options:
-        - label: Restore to macOS Default fixed display issue
+        - label: Restore Previous / Original / Reset fixed the issue
         - label: Restore did not help
+        - label: Did not try restore
 
   - type: textarea
     id: notes
     attributes:
       label: Additional context
+      description: Redact PII. No serial, Apple ID, or private research scoring.

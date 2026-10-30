@@ -4,11 +4,15 @@ Buckets align with GitHub labels: `now`, `next`, `later`, `experimental`, `wont-
 
 **Tagline:** Make your Mac yours.
 
+**Freeze:** Developer Preview 2 is **frozen for internal testing**. No new product features, v0.2 scope, UI redesign, or payment redesign until Stable signing unblocks or maintainers lift the freeze. Channels: [`RELEASE_CHANNELS.md`](RELEASE_CHANNELS.md).
+
+Internal tester target: **3–5 real Macs** — see [`INTERNAL_TEST_MATRIX.md`](INTERNAL_TEST_MATRIX.md).
+
 ---
 
-## v0.1 scope (first release)
+## v0.1 scope (first Stable)
 
-Ship when release gate returns `READY` or `READY WITH KNOWN LIMITATIONS`:
+Ship when release gate returns `READY` or `READY WITH KNOWN LIMITATIONS` **and** Developer ID + notarization complete:
 
 | Area | Deliverable |
 |------|-------------|
@@ -17,42 +21,33 @@ Ship when release gate returns `READY` or `READY WITH KNOWN LIMITATIONS`:
 | **Support UX** | Voluntary support, browser-only links, local counters |
 | **Website** | Download + support pages on kamyab.co.in |
 
-Target tag: `0.1.0-rc.1` → gate → `0.1.0`
+Preview tags: `v0.1.0-dev.1` (DP1), `v0.1.0-dev.2` (DP2). Stable tag: plain `v0.1.0` (reserved).
 
 ---
 
 ## Now
 
-- Settings Engine core (READ/BACKUP/APPLY/VERIFY/HISTORY/RESTORE/RESET/COMPATIBILITY/ERROR)
-- Window Corners module + compatibility gating
-- Support UX (no `?paid=true` handling)
-- CI with isolated preference domains
-- Docs: PRODUCT_PRINCIPLES, ARCHITECTURE, RELEASE_GATE, DEVELOPMENT
+- Internal DP2 testing (matrix + procedure)
+- Sign / notarize backlog for Stable Gatekeeper v0.1
+- Docs and release-channel hygiene only
 
 ---
 
-## Next
+## Under consideration
+
+Broad backlog only — not committed for this freeze:
 
 - Additional appearance modules (menu bar, accent) after maintainer approval
 - Improved external-change detection UX
 - Intel-specific compatibility pass
 - Localized strings beyond English
-- In-app module marketplace **not planned** — keep OSS modular toggles only
-
----
-
-## Later
-
-- Small, shippable “discovery” modules when demand is clear
+- Small “discovery” modules when demand is clear
 - Export/import backup bundles (local files, encrypted optional)
 - Shortcuts / AppleScript hooks for restore actions (if safe)
-
----
-
-## Experimental
-
-- Preview toggles without apply (requires engine support)
+- Preview toggles without apply (experimental)
 - Community module API **only if** sandboxed and reviewable — no timeline
+
+In-app module marketplace **not planned** — keep OSS modular toggles only.
 
 ---
 
@@ -71,8 +66,9 @@ Target tag: `0.1.0-rc.1` → gate → `0.1.0`
 
 | Version | Theme |
 |---------|--------|
-| 0.1.x | Engine + Window Corners + Support |
-| 0.2.x | Second module wave |
+| 0.1.0-dev.N | Developer Preview (unsigned OK) |
+| 0.1.x Stable | Engine + Window Corners + Support (signed/notarized) |
+| Later | Second module wave — after freeze lift |
 | 1.0 | Stable module set + notarized stable channel |
 
 Dates are not commitments — priority is safety and reversibility over speed.

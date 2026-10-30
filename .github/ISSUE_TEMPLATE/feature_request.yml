@@ -1,13 +1,14 @@
 name: Feature request
-description: Propose a new tweak or product improvement (requires roadmap alignment)
+description: Propose a tweak or improvement (roadmap alignment; no private scoring)
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Read `docs/PRODUCT_PRINCIPLES.md` first. We do not ship telemetry, accounts, paid unlocks, or SIP/Gatekeeper bypasses.
-        Label hints: `now`, `next`, `later`, `experimental`, `wont-build` (maintainers set priority).
+        Read `docs/PRODUCT_PRINCIPLES.md` and `docs/ROADMAP.md` first.
+        We do not ship telemetry, accounts, paid unlocks, or SIP/Gatekeeper bypasses.
+        **Do not** include serial numbers, Apple ID, or private research scoring.
 
   - type: textarea
     id: problem
@@ -28,14 +29,14 @@ body:
     id: reversibility
     attributes:
       label: Reversibility (Settings Engine restore paths)
-      description: How does BACKUP/APPLY/VERIFY/RESTORE apply?
+      description: How do BACKUP / APPLY / VERIFY / RESTORE / RESET apply?
     validations:
       required: true
 
   - type: dropdown
     id: risk
     attributes:
-      label: Risk estimate
+      label: Risk estimate (your best guess)
       options:
         - LOW
         - MEDIUM
@@ -60,4 +61,4 @@ body:
     id: context
     attributes:
       label: Extra context (optional)
-      description: Links to discussions, forum threads, or related issues
+      description: Public Discussion links or related issues only — no private scoring sheets

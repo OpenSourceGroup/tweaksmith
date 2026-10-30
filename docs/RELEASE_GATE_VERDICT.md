@@ -11,7 +11,7 @@
 |---------|--------|
 | **GitHub Developer Preview 2** (unsigned pre-release) | **RELEASED** — tag `v0.1.0-dev.2`, GitHub **pre-release** |
 | **Stable / Gatekeeper v0.1** | **BLOCKED** — Developer ID Application + notarization **DEFERRED** |
-| **Clean tag `v0.1.0`** | Reserved for eventual signed stable (DP1 historically used this tag; do not rewrite) |
+| **Clean tag `v0.1.0`** | Available for Stable — DP1 relocated to `v0.1.0-dev.1` |
 | **Voluntary payments** | Untouched this session — optional, no unlock |
 
 Do **not** call the unsigned Developer Preview “stable” or the official Gatekeeper download.

@@ -8,6 +8,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 - Public repository is [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith). Kamyab Infotech remains the lead maintainer.
+- DP1 relocated to tag `v0.1.0-dev.1`; plain `v0.1.0` reserved for future Stable
+- Internal testing docs, release channels, issue-template hygiene for DP2 freeze
 
 ## [0.1.0-dev.2] - 2026-10-30
 
@@ -24,7 +26,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Unsigned ad-hoc preview — Gatekeeper rejection expected; Open Anyway for technical users
 - Stable Gatekeeper v0.1 still blocked on Developer ID + notarization
 
-## [0.1.0] - 2026-10-29
+## [0.1.0-dev.1] - 2026-10-29
 
 ### Added
 - Settings Engine: READ / BACKUP / APPLY / VERIFY / RESTORE / RESET lifecycle with isolated-prefs tests
@@ -34,7 +36,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - SwiftPM packaging via `scripts/package-release.sh` (`.app` + SHA-256; ad-hoc when unsigned)
 
 ### Known limitations
-- **Developer Preview** GitHub pre-release is **unsigned** (ad-hoc) — not Developer ID / notarized / Gatekeeper-ready
+- **Developer Preview 1** GitHub pre-release is **unsigned** (ad-hoc) — not Developer ID / notarized / Gatekeeper-ready
 - Stable Gatekeeper v0.1 remains blocked until Developer ID + notarization
 - Window Corners may need logout/restart; preview illustrative only
 - Window Corners adjusts the macOS window-corner preference used by supported applications (no every-app claim; Override2 not exposed)
@@ -51,5 +53,5 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 [Unreleased]: https://github.com/OpenSourceGroup/tweaksmith/compare/v0.1.0-dev.2...HEAD
 [0.1.0-dev.2]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-dev.2
-[0.1.0]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0
+[0.1.0-dev.1]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-dev.1
 [0.1.0-rc.1]: https://github.com/OpenSourceGroup/tweaksmith/releases/tag/v0.1.0-rc.1
