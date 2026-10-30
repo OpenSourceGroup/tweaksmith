@@ -1,5 +1,5 @@
 name: Bug report
-description: Something broken in Tweaksmith or a module
+description: Something broken in Tweaksmith or a module (redact PII)
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -7,12 +7,13 @@ body:
     attributes:
       value: |
         Include steps to reproduce. If preferences are involved, note whether Restore fixed the issue.
+        **Do not** paste serial numbers, Apple ID, secrets, full preference dumps with personal data, or private research scoring.
 
   - type: input
     id: version
     attributes:
-      label: Tweaksmith version
-      placeholder: 0.1.0-rc.1
+      label: Tweaksmith version / tag
+      placeholder: v0.1.0-dev.2
     validations:
       required: true
 
@@ -23,6 +24,7 @@ body:
       options:
         - Apple Silicon
         - Intel
+        - Unknown
     validations:
       required: true
 
@@ -30,7 +32,7 @@ body:
     id: macos
     attributes:
       label: macOS version
-      placeholder: "26.x (Tahoe)"
+      placeholder: "26.x (Tahoe) / 27.x"
     validations:
       required: true
 
@@ -59,12 +61,13 @@ body:
     id: logs
     attributes:
       label: Logs / screenshots
-      description: Do not paste secrets or full preference dumps with personal data
+      description: Redact PII. No serial, Apple ID, or payment/card data.
 
   - type: checkboxes
     id: restore
     attributes:
       label: Recovery
       options:
-        - label: Restore Previous / Restore All fixed the issue
+        - label: Restore Previous / Restore Original / Reset fixed the issue
         - label: Issue persists after restore
+        - label: Did not try restore

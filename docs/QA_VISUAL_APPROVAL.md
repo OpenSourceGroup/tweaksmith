@@ -47,7 +47,7 @@ Captured via AppKit `cacheDisplay` (no Screen Recording / Gatekeeper bypass).
 
 Artifact: `~/Downloads/Tweaksmith-0.1.0-Developer-Preview-macOS.zip`  
 SHA-256: `de9e3c6ed0468424d613cf1665dcd7f8a140c45db9e31da2f99e449d0d253f70`  
-Source: GitHub Releases `v0.1.0` (quarantine present from Chrome download; inspected only).
+Source: GitHub Releases DP1 (now tagged `v0.1.0-dev.1`; quarantine present from Chrome download; inspected only).
 
 | Check | Result |
 |-------|--------|

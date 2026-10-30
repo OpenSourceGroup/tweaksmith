@@ -40,11 +40,21 @@ macOS may require **System Settings → Privacy & Security → Open Anyway**. Do
 
 ## Support (voluntary)
 
-Tweaksmith is free open-source software. **Payment never unlocks features.**
+Free software. Pay what it’s worth. **Payment never unlocks features.**
 
-- Pay what it’s worth on the production support page: [kamyab.co.in/tweaksmith/support](https://kamyab.co.in/tweaksmith/support)
+- Production support page: [kamyab.co.in/tweaksmith/support](https://kamyab.co.in/tweaksmith/support)
 - Suggested amounts: ₹199 / ₹499 (Recommended) / ₹999 / Custom
 - Checkout runs in the browser only (Razorpay). The Mac app never handles card data.
+
+---
+
+## Help test Tweaksmith
+
+Developer Preview 2 is frozen for internal testing (unsigned). Prefer the GitHub pre-release over local builds.
+
+- Procedure: [`docs/INTERNAL_TESTING.md`](docs/INTERNAL_TESTING.md)
+- Matrix: [`docs/INTERNAL_TEST_MATRIX.md`](docs/INTERNAL_TEST_MATRIX.md)
+- [Compatibility report](https://github.com/OpenSourceGroup/tweaksmith/issues/new?template=compatibility.yml) · [Bug report](https://github.com/OpenSourceGroup/tweaksmith/issues/new?template=bug_report.yml) · [Discussions](https://github.com/OpenSourceGroup/tweaksmith/discussions)
 
 ---
 
@@ -60,6 +70,7 @@ Tweaksmith is free open-source software. **Payment never unlocks features.**
 | [Security](SECURITY.md) | Vulnerability reporting |
 | [Governance](GOVERNANCE.md) | Project, maintainer, releases |
 | [Release process](docs/RELEASE_PROCESS.md) | RC → gate → production |
+| [Release channels](docs/RELEASE_CHANNELS.md) | Developer Preview / Beta / Stable |
 
 ---
 

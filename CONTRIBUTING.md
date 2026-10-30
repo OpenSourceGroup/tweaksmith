@@ -30,6 +30,10 @@ swift test   # requires full Xcode; otherwise use run-smoke.sh
 - Update `CHANGELOG.md` under `[Unreleased]` for user-visible changes
 - One logical change per PR when possible
 
+## Commit messages (forward-looking)
+
+Public commits must not add AI/tool co-author trailers (for example Cursor, ChatGPT, Claude, Grok, Copilot). Keep messages human-authored. Do not rewrite existing history to strip old trailers.
+
 ## Code style
 
 - Swift 6 / SwiftUI conventions matching existing files
