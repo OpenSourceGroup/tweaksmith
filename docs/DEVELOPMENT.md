@@ -30,7 +30,7 @@ All preference mutations in product code and tests must respect:
 | **HISTORY** | Append audit entry (local) |
 | **RESTORE** | Previous / Original / macOS Default / Restore All |
 | **RESET** | Domain-level reset per module spec |
-| **COMPATIBILITY** | Gate apply on OS version, chip, known conflicts |
+| **COMPATIBILITY** | Gate apply on OS version (major + minor), chip, known conflicts — failed checks must not write |
 | **ERROR** | Surface failure; never silent partial apply |
 
 Never bypass the engine for “quick fixes” in feature modules.

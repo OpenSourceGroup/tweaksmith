@@ -12,7 +12,7 @@ DIST="${ROOT}/dist"
 APP_NAME="Tweaksmith"
 BUNDLE_ID="co.in.kamyab.tweaksmith"
 MIN_SYS="26.0"
-BUILD_HOST="$(sw_vers -productVersion 2>/dev/null || echo unknown)"
+BUILD_HOST="$(sw_vers -productVersion 2>/dev/null || echo unknown) (build $(sw_vers -buildVersion 2>/dev/null || echo unknown))"
 ARCH="$(uname -m)"
 
 SIGNING_MODE="unsigned-adhoc"

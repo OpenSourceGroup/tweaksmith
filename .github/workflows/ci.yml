@@ -26,14 +26,12 @@ jobs:
           ./scripts/bootstrap-check.sh
 
       - name: Swift Package tests (XCTest when Xcode present)
-        id: swift_test
-        continue-on-error: true
         run: |
           if xcodebuild -version >/dev/null 2>&1; then
             chmod +x scripts/run-swift-test.sh
             ./scripts/run-swift-test.sh
           else
-            echo "No full Xcode — skipping XCTest"
+            echo "CI requires full Xcode for XCTest — runner misconfigured."
             exit 1
           fi
 
@@ -44,12 +42,13 @@ jobs:
 
       - name: Static hygiene
         run: |
-          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' . || true
+          set -e
+          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' .
           ! test -d research
           ! test -f docs/RESEARCH_AGENT.md
           ! test -f docs/CURSOR_ENGINEERING_AGENT.md
           ! test -f docs/tweaksmith-intelligence.md
           ! test -d tweaksmith-intelligence
           ! test -f .github/workflows/research-intake.yml
-          ! rg -n -i 'tweaksmith-intelligence|research agent|private intelligence' --glob '!docs/**' --glob '!.github/**' --glob '!.git/**' . || true
+          ! rg -n -i 'tweaksmith-intelligence|research agent|private intelligence' --glob '!docs/**' --glob '!.github/**' --glob '!.git/**' .
           echo "Hygiene scan complete."

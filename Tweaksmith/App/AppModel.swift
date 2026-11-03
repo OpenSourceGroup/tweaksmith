@@ -116,6 +116,20 @@ public final class AppModel: ObservableObject {
         currentRadiusDescription
     }
 
+    var windowCornersCompatibility: CompatibilityReport {
+        engine.compatibility.evaluate(
+            moduleID: windowCorners.id,
+            minimumMajor: windowCorners.minimumMacOSMajor,
+            minimumMinor: windowCorners.minimumMacOSMinor,
+            risk: windowCorners.compatibilityRisk,
+            notes: windowCorners.compatibilityNotes
+        )
+    }
+
+    var hostOSDescription: String {
+        MacOSVersionReporting.fullDescription()
+    }
+
     func refreshFromSystem() {
         do {
             let entries = try engine.read(windowCorners.preferenceKeys)
@@ -151,20 +165,17 @@ public final class AppModel: ObservableObject {
                 }
                 windowCornersRadius = sanitised
             }
-            let report = CompatibilityChecker().evaluate(
-                moduleID: windowCorners.id,
-                minimumMajor: windowCorners.minimumMacOSMajor,
-                risk: windowCorners.compatibilityRisk,
-                notes: windowCorners.compatibilityNotes
-            )
+            let report = windowCornersCompatibility
             let plan = windowCorners.plan(
                 preset: windowCornersPreset,
                 customRadius: windowCornersPreset == .custom ? windowCornersRadius : nil
             )
             if !report.allowed {
-                statusMessage = "Compatibility warning: \(report.notes.joined(separator: " "))"
+                statusMessage = report.notes.joined(separator: " ")
+                engineEvents = engine.recentEvents()
+                return
             }
-            let result = try engine.apply(plan, requireCompatibility: nil)
+            let result = try engine.apply(plan, requireCompatibility: report)
             guard result.verified else {
                 statusMessage = "Apply wrote values but verification failed — use Restore Previous."
                 engineEvents = engine.recentEvents()
