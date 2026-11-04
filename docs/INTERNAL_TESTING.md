@@ -19,7 +19,7 @@ Use the published GitHub pre-release — not a local `dist/` rebuild — unless 
 11. Apply a preset again, then **Reset** to macOS Default
 12. Quit and relaunch — confirm UI and state
 13. Spot-check chrome after apply: Finder, Safari, System Settings, one 3rd-party app, any custom-rendered window you care about (logout/restart of apps may be required)
-14. Open **Support** — voluntary page in browser; payment never required
+14. Open **Support** — voluntary page in browser; payment never required. For Stable gate: optional smoke of live checkout on kamyab.co.in (see [`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md))
 15. Record results in [`INTERNAL_TEST_MATRIX.md`](INTERNAL_TEST_MATRIX.md)
 
 ## Failures

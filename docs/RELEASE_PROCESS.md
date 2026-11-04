@@ -2,6 +2,8 @@
 
 Official releases are published by authorized maintainers. **Kamyab Infotech** is the current lead maintainer. Builds are signed and notarized when CI secrets exist, then published to GitHub Releases and the website ([kamyab.co.in](https://kamyab.co.in)).
 
+Before Stable **v0.1.0**, confirm voluntary support checkout is **Razorpay LIVE** on the website ([`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md)) — independent of this repo’s CI secrets.
+
 ---
 
 ## Overview

@@ -53,6 +53,7 @@ Record the verdict in the release issue/PR and `CHANGELOG.md`. Script stub: `scr
 | 3.2 | App ignores `?paid=true` and similar params | ☐ |
 | 3.3 | Counters stored locally only; no network | ☐ |
 | 3.4 | Copy reflects voluntary support, no feature unlock | ☐ |
+| 3.5 | **Stable only:** production support page uses **Razorpay LIVE** (maintainer verifies on kamyab.co.in — not in app repo) | ☐ |
 
 ---
 
