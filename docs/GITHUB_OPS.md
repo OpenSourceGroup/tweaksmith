@@ -68,5 +68,5 @@ After CI is green, optionally set `required_status_checks.contexts` to `["test"]
 1. Optional: create org Projects v2 **Tweaksmith** when a PAT/App token with `project` + `read:project` is available
 2. Add Apple notarization secrets to repo/org Actions when ready (`APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID`, `APPLE_CERTIFICATE_BASE64`, `APPLE_CERTIFICATE_PASSWORD`)
 3. Install full Xcode (or use Actions macos + secrets) so `package-release.sh` can Developer ID–sign + notarize
-4. Razorpay TEST secrets on staging worker before enabling preview checkout
+4. **Support payments (Razorpay LIVE):** configure live keys and webhooks on the **kamyab.co.in** deployment — not in this repo. See [`docs/SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md) for dashboard + env checklist (`RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `RAZORPAY_WEBHOOK_SECRET`).
 5. Promote draft RC release only after notarized artifact exists — unsigned zips are **not** Gatekeeper-public

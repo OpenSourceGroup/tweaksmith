@@ -81,9 +81,9 @@ Each module implements:
 
 ## Support subsystem
 
-- `SupportService` holds local-only integers (e.g. times user opened support page)
-- Opens `URL` via system browser; does not parse return URLs
-- No authentication tokens
+- `SupportPromptController` holds local-only prompt state (successful actions, dismissals)
+- Opens `ProjectLinks.support` via system browser; may append `amount` only; does not parse return URLs or `?paid=true`
+- No Razorpay keys or payment verification in-app — checkout is on kamyab.co.in ([`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md))
 
 ---
 
