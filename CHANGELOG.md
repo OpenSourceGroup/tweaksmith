@@ -10,6 +10,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Public repository is [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith). Kamyab Infotech remains the lead maintainer.
 - DP1 relocated to tag `v0.1.0-dev.1`; plain `v0.1.0` reserved for future Stable
 - Internal testing docs, release channels, issue-template hygiene for DP2 freeze
+- Support payments: release notes and `KNOWN_LIMITATIONS` no longer cite Razorpay TEST; Stable **v0.1.0** expects **live** checkout on [kamyab.co.in/tweaksmith/support](https://kamyab.co.in/tweaksmith/support) (see [`docs/SUPPORT_PAYMENTS.md`](docs/SUPPORT_PAYMENTS.md))
 
 ## [0.1.0-dev.2] - 2026-10-30
 

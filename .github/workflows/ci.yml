@@ -44,7 +44,7 @@ jobs:
 
       - name: Static hygiene
         run: |
-          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' . || true
+          ! rg -n "kamyab\\.in[^.]|rzp_live_|rzp_test_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' . || true
           ! test -d research
           ! test -f docs/RESEARCH_AGENT.md
           ! test -f docs/CURSOR_ENGINEERING_AGENT.md
