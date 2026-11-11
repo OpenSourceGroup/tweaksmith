@@ -30,7 +30,7 @@ All preference mutations in product code and tests must respect:
 | **HISTORY** | Append audit entry (local) |
 | **RESTORE** | Previous / Original / macOS Default / Restore All |
 | **RESET** | Domain-level reset per module spec |
-| **COMPATIBILITY** | Gate apply on OS version, chip, known conflicts |
+| **COMPATIBILITY** | Gate apply on OS version (major + minor), chip, known conflicts — failed checks must not write |
 | **ERROR** | Surface failure; never silent partial apply |
 
 Never bypass the engine for “quick fixes” in feature modules.
@@ -47,6 +47,7 @@ Never bypass the engine for “quick fixes” in feature modules.
 - Support / donate URLs open with `NSWorkspace.shared.open` (browser only)
 - **Never** trust `?paid=true` or similar query params inside the app
 - Local support counters increment only on explicit user action; no network sync
+- Razorpay keys and live/test mode live on **kamyab.co.in** — see [`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md)
 
 ## Local commands
 

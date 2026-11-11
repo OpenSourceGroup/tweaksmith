@@ -9,10 +9,15 @@ cd "$ROOT"
 
 VERSION="${1:-${TWEAKSMITH_VERSION:-0.1.0-rc.1}}"
 DIST="${ROOT}/dist"
+
+# Plain semver x.y.z with no prerelease suffix — Stable channel only when signed+notarized.
+is_stable_release_version() {
+  [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+}
 APP_NAME="Tweaksmith"
 BUNDLE_ID="co.in.kamyab.tweaksmith"
 MIN_SYS="26.0"
-BUILD_HOST="$(sw_vers -productVersion 2>/dev/null || echo unknown)"
+BUILD_HOST="$(sw_vers -productVersion 2>/dev/null || echo unknown) (build $(sw_vers -buildVersion 2>/dev/null || echo unknown))"
 ARCH="$(uname -m)"
 
 SIGNING_MODE="unsigned-adhoc"
@@ -137,6 +142,16 @@ else
   SIGNING_MODE="unsigned-adhoc"
 fi
 
+if [[ "$SIGNING_MODE" == "developer-id" ]]; then
+  if [[ -z "${APPLE_ID:-}" || -z "${APPLE_APP_SPECIFIC_PASSWORD:-}" || -z "${APPLE_TEAM_ID:-}" ]]; then
+    if is_stable_release_version; then
+      echo "error: Stable version ${VERSION} requires notarization credentials (APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD, APPLE_TEAM_ID)" >&2
+      exit 1
+    fi
+    echo "warning: Developer ID signed but notarization credentials missing — artifact is NOT Gatekeeper-public" >&2
+  fi
+fi
+
 if [[ "$SIGNING_MODE" == "developer-id" && -n "${APPLE_ID:-}" && -n "${APPLE_APP_SPECIFIC_PASSWORD:-}" && -n "${APPLE_TEAM_ID:-}" ]]; then
   echo "==> Submitting for notarization (credentials not printed)"
   ZIP_NOTARY="${DIST}/${APP_NAME}-${VERSION}-notarize.zip"
@@ -189,7 +204,7 @@ BIN_ZIP="${DIST}/${APP_NAME}-${VERSION}-macos-arm64-binary-ONLY.zip"
 cat > "${DIST}/COMPATIBILITY_NOTES.md" <<EOF
 # Compatibility — Tweaksmith ${VERSION}
 
-- **OS:** macOS Tahoe **26+** (LSMinimumSystemVersion ${MIN_SYS})
+- **OS:** macOS Tahoe **26.4+** for Window Corners apply (${MIN_SYS} app launch minimum; module gated in-app)
 - **CPU:** Apple Silicon (arm64) primary; this artifact is **arm64-only**
 - **Build host:** macOS ${BUILD_HOST} / ${ARCH}
 - **Forbidden:** SIP disabled, Gatekeeper disabled globally, modified system frameworks, kexts
@@ -201,10 +216,10 @@ cat > "${DIST}/KNOWN_LIMITATIONS.md" <<EOF
 # Known limitations — Tweaksmith ${VERSION}
 
 1. **Signing:** mode=\`${SIGNING_MODE}\`; notarized=\`${NOTARIZED}\`. If not Developer ID + notarized, **do not** publish as the official Gatekeeper download.
-2. Packaging uses SwiftPM \`.app\` wrap (not \`xcodebuild\` archive); CI/local hosts without Xcode.app skip XCTest and use smoke.
+2. Packaging uses SwiftPM \`.app\` wrap (not \`xcodebuild\` archive).
 3. **NSConvolutionOverride2** may be absent; UI must not expose unsupported overrides.
-4. **Window Corners** may require logout/restart; preview is illustrative.
-5. **Support payments** may be Razorpay TEST-only until production cut-over.
+4. **Window Corners** requires macOS **26.4+**; may require logout/restart; preview is illustrative.
+5. **Electron** and many cross-platform apps ignore \`NSConvolutionOverride1\`.
 EOF
 
 # Release notes from CHANGELOG section when present.
@@ -265,10 +280,24 @@ EOF
     > SHA256SUMS.txt
 )
 
+if is_stable_release_version; then
+  if [[ "$SIGNING_MODE" != "developer-id" || "$NOTARIZED" != "yes" ]]; then
+    echo "error: Stable version ${VERSION} must be Developer ID signed, notarized, and stapled (see issue #1)" >&2
+    exit 1
+  fi
+fi
+
+chmod +x "${ROOT}/scripts/validate-release-artifact.sh" 2>/dev/null || true
+if [[ -x "${ROOT}/scripts/validate-release-artifact.sh" ]]; then
+  TWEAKSMITH_REQUIRE_GATEKEEPER="$([ "$NOTARIZED" = "yes" ] && echo yes || echo no)" \
+    "${ROOT}/scripts/validate-release-artifact.sh"
+fi
+
 echo
 echo "==> Packaged ${VERSION}"
 echo "    app:  $APP"
 echo "    zip:  $ZIP_PATH"
 echo "    mode: $SIGNING_MODE  notarized=$NOTARIZED"
+echo "    gatekeeper_public_ok=$([ "$SIGNING_MODE" = "developer-id" ] && [ "$NOTARIZED" = "yes" ] && echo yes || echo no)"
 echo "    sums: ${DIST}/SHA256SUMS.txt"
 cat "${DIST}/SHA256SUMS.txt"

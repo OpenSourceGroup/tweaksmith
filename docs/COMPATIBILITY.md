@@ -16,7 +16,8 @@ Support claims use three levels only — **do not treat guesses as verified supp
 
 | Environment | Level | Notes |
 |-------------|-------|-------|
-| macOS 26+ (Tahoe family), Apple Silicon | **Verified** (prefs/engine) on maintainer host macOS **27.2** / arm64 | Primary target |
+| macOS **26.4+** (Tahoe family), Apple Silicon | **Expected** — Window Corners gated below 26.4 | Primary target; 26.3 and earlier blocked in-app |
+| macOS 26.0–26.3 | Not supported for Window Corners | Apply blocked (preference reported no-op) |
 | Intel (macOS 26+) | **Expected** best-effort | Module gates may apply; not verified this cycle |
 | macOS 25 and earlier | Not supported | — |
 | Sample-app chrome after Window Corners apply | **Unknown** / not claimed | Logout or quit apps often required; in-app preview is illustrative |
@@ -25,7 +26,7 @@ Support claims use three levels only — **do not treat guesses as verified supp
 
 ## Evidence — Window Corners (2026-10-29 + 2026-10-30 re-run)
 
-Host: macOS **27.2** (Build **26B123**, Tahoe 26 family), **arm64**. Full Xcode.app: **absent** (CLT only). Developer ID identities: **0**.
+Host: maintainer row **RE-VERIFY** — prior notes used marketing **27.2** with build **26B123** (mixed families). Re-record with `sw_vers -productVersion` and `sw_vers -buildVersion` plus Tweaksmith About OS line. **arm64**. Full Xcode.app: **absent** (CLT only). Developer ID identities: **0**.
 
 Preference used by **supported apps that honor** `NSConvolutionOverride1`. Tweaksmith does **not** claim to change every Mac window. Fail-closed: unknown macOS majors are not auto-supported.
 
@@ -52,6 +53,9 @@ Risk: **MEDIUM** (undocumented preference). Always reversible via Settings Engin
 | Topic | Notes |
 |-------|--------|
 | **Documentation** | Semi-documented / undocumented — treat as **MEDIUM** risk |
+| **Minimum OS** | **macOS 26.4+** — apply blocked below 26.4 (reported no-op) |
+| **Electron / cross-platform** | Often **ignore** `NSConvolutionOverride1` — not a Tweaksmith bug |
+| **macOS 27+ default** | System default corner radius when the key is removed may differ from Tahoe 26 |
 | **Revert** | Restore Previous / Original / Reset to macOS Default |
 | **Restart** | Full logout or restart may be required — UI must state this before apply |
 | **External drift** | macOS updates or other tools may change values |

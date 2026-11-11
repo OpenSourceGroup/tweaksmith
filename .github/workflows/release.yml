@@ -41,20 +41,34 @@ jobs:
             exit 1
           }
 
-      - name: Package release artifact
+      - name: Swift tests (isolated domains)
         env:
+          TWEAKSMITH_TEST_ISOLATED_PREFS: "1"
+        run: |
+          chmod +x scripts/run-smoke.sh scripts/run-swift-test.sh
+          ./scripts/run-smoke.sh
+          if xcodebuild -version >/dev/null 2>&1; then
+            ./scripts/run-swift-test.sh
+          else
+            echo "error: Production release requires Xcode for XCTest on macOS runner" >&2
+            exit 1
+          fi
+
+      - name: Package release artifact (Stable — Gatekeeper required)
+        env:
+          TWEAKSMITH_REQUIRE_GATEKEEPER: "yes"
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
-          chmod +x scripts/package-release.sh scripts/run-smoke.sh
-          ./scripts/run-smoke.sh
+          chmod +x scripts/package-release.sh scripts/validate-release-artifact.sh
           ./scripts/package-release.sh "${{ inputs.version }}"
-          if ! grep -q 'gatekeeper_public_ok=yes' dist/ARTIFACT_META.txt; then
-            echo "Signing secrets not configured — aborting official production artifact."
-            echo "Use Release Candidate draft for UNSIGNED builds; do not publish Gatekeeper channel."
+          grep -q 'gatekeeper_public_ok=yes' dist/ARTIFACT_META.txt
+          TWEAKSMITH_REQUIRE_GATEKEEPER=yes ./scripts/validate-release-artifact.sh
+          if ls dist/*.zip 2>/dev/null | grep -q 'UNSIGNED-NOT-FOR-GATEKEEPER'; then
+            echo "error: Stable release cannot ship UNSIGNED zip name" >&2
             exit 1
           fi
 

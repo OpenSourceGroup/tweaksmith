@@ -9,6 +9,10 @@ struct WindowCornersView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 header
+                if !model.windowCornersCompatibility.allowed {
+                    compatibilityBanner
+                }
+                compatibilityNotesBlock
                 stateRow
                 if !model.lastExternalChanges.isEmpty {
                     externalBanner
@@ -36,6 +40,37 @@ struct WindowCornersView: View {
                 .font(.largeTitle.weight(.semibold))
             Text("Adjust the macOS window-corner preference used by supported apps. Changes are reversible.")
                 .font(.body)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var compatibilityBanner: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .foregroundStyle(.orange)
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Apply blocked on this Mac")
+                    .font(.callout.weight(.semibold))
+                Text(model.windowCornersCompatibility.notes.joined(separator: " "))
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(10)
+        .background(Color.orange.opacity(0.12), in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .accessibilityElement(children: .combine)
+    }
+
+    private var compatibilityNotesBlock: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Compatibility")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+            Text("Requires macOS 26.4+. Electron apps usually ignore this preference. macOS 27+ may use a different default radius when the key is removed.")
+                .font(.caption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -147,6 +182,7 @@ struct WindowCornersView: View {
                 .keyboardShortcut(.defaultAction)
                 .accessibilityIdentifier("apply-window-corners")
                 .help("Apply the selected Window Corners preset")
+                .disabled(!model.windowCornersCompatibility.allowed)
             if model.applyConfirmationVisible {
                 Label("Applied", systemImage: "checkmark.circle.fill")
                     .foregroundStyle(TSTheme.copper)

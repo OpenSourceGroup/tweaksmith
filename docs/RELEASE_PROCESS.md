@@ -2,6 +2,8 @@
 
 Official releases are published by authorized maintainers. **Kamyab Infotech** is the current lead maintainer. Builds are signed and notarized when CI secrets exist, then published to GitHub Releases and the website ([kamyab.co.in](https://kamyab.co.in)).
 
+Before Stable **v0.1.0**, confirm voluntary support checkout is **Razorpay LIVE** on the website ([`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md)) — independent of this repo’s CI secrets.
+
 ---
 
 ## Overview
@@ -68,13 +70,19 @@ feature branch → PR → main (CI green)
 
 ## Secrets (GitHub Actions)
 
-Expected **optional** secrets for signing (names illustrative—configure in repo settings):
+See [`SIGNING_NOTARIZATION.md`](SIGNING_NOTARIZATION.md) for exact secret names and issue #1 acceptance criteria.
 
-- Apple Developer ID certificate + password
-- Notarization credentials
-- Never commit; never echo in logs
+| Secret | Required for Stable |
+|--------|---------------------|
+| `APPLE_CERTIFICATE_BASE64` | Yes |
+| `APPLE_CERTIFICATE_PASSWORD` | Yes |
+| `APPLE_ID` | Yes |
+| `APPLE_APP_SPECIFIC_PASSWORD` | Yes |
+| `APPLE_TEAM_ID` | Yes |
 
-If secrets missing, workflows produce unsigned artifacts for local dev only—not for public “official” channel.
+If secrets are missing, RC/CI may produce **unsigned** artifacts marked `UNSIGNED-NOT-FOR-GATEKEEPER` — not the Stable channel.
+
+Voluntary support checkout (Razorpay Live) is configured on **kamyab.co.in**, not in this repo — see [`SUPPORT_PAYMENTS.md`](SUPPORT_PAYMENTS.md).
 
 ---
 

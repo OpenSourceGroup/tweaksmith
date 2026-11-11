@@ -44,7 +44,7 @@ Free software. Pay what it’s worth. **Payment never unlocks features.**
 
 - Production support page: [kamyab.co.in/tweaksmith/support](https://kamyab.co.in/tweaksmith/support)
 - Suggested amounts: ₹199 / ₹499 (Recommended) / ₹999 / Custom
-- Checkout runs in the browser only (Razorpay). The Mac app never handles card data.
+- Checkout runs in the browser only (Razorpay **live** on kamyab.co.in). The Mac app never handles card data or API keys.
 
 ---
 
@@ -71,6 +71,7 @@ Developer Preview 2 is frozen for internal testing (unsigned). Prefer the GitHub
 | [Governance](GOVERNANCE.md) | Project, maintainer, releases |
 | [Release process](docs/RELEASE_PROCESS.md) | RC → gate → production |
 | [Release channels](docs/RELEASE_CHANNELS.md) | Developer Preview / Beta / Stable |
+| [Support payments](docs/SUPPORT_PAYMENTS.md) | Browser-only checkout; Razorpay lives on website |
 
 ---
 

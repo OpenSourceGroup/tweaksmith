@@ -18,10 +18,15 @@ public struct WindowCornersModule: TweakModule {
     public let status: ModuleStatus = .available
     public let summary = "Adjust macOS window corner radius using NSConvolutionOverride1."
     public let minimumMacOSMajor = 26
+    /// Observed no-op below 26.4 on validation hosts; gate apply fail-closed.
+    public let minimumMacOSMinor = 4
     public let compatibilityRisk: CompatibilityRisk = .medium
     public let compatibilityNotes: [String] = [
         "Uses undocumented preference NSConvolutionOverride1 (float).",
         "NSConvolutionOverride2 was not found on validation host — not exposed.",
+        "Requires macOS 26.4+ for Window Corners to take effect.",
+        "Electron and many cross-platform apps ignore NSConvolutionOverride1.",
+        "On macOS 27+, the system default corner radius may differ from Tahoe 26.",
         "Changes may require quitting apps or logging out to fully apply.",
         "In-app preview is illustrative only — not a live window chrome render.",
         "Always reversible via Restore Previous / Original / Reset to macOS Default."

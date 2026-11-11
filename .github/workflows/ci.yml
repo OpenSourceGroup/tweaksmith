@@ -26,14 +26,12 @@ jobs:
           ./scripts/bootstrap-check.sh
 
       - name: Swift Package tests (XCTest when Xcode present)
-        id: swift_test
-        continue-on-error: true
         run: |
           if xcodebuild -version >/dev/null 2>&1; then
             chmod +x scripts/run-swift-test.sh
             ./scripts/run-swift-test.sh
           else
-            echo "No full Xcode — skipping XCTest"
+            echo "CI requires full Xcode for XCTest — runner misconfigured."
             exit 1
           fi
 
@@ -44,12 +42,33 @@ jobs:
 
       - name: Static hygiene
         run: |
-          ! rg -n "kamyab\\.in[^.]|rzp_live_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' . || true
+          set -e
+          ! rg -n "kamyab\\.in[^.]|rzp_live_|rzp_test_|APPLE_ID_PASSWORD|GROK_API_KEY" --glob '!docs/**' --glob '!.github/**' .
           ! test -d research
           ! test -f docs/RESEARCH_AGENT.md
           ! test -f docs/CURSOR_ENGINEERING_AGENT.md
           ! test -f docs/tweaksmith-intelligence.md
           ! test -d tweaksmith-intelligence
           ! test -f .github/workflows/research-intake.yml
-          ! rg -n -i 'tweaksmith-intelligence|research agent|private intelligence' --glob '!docs/**' --glob '!.github/**' --glob '!.git/**' . || true
+          ! rg -n -i 'tweaksmith-intelligence|research agent|private intelligence' --glob '!docs/**' --glob '!.github/**' --glob '!.git/**' .
           echo "Hygiene scan complete."
+
+  packaging-dry-run:
+    runs-on: macos-15
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package unsigned dry-run (not Stable / not Gatekeeper-ready)
+        env:
+          TWEAKSMITH_TEST_ISOLATED_PREFS: "1"
+        run: |
+          set -e
+          chmod +x scripts/run-smoke.sh scripts/package-release.sh scripts/validate-release-artifact.sh
+          ./scripts/run-smoke.sh
+          ./scripts/package-release.sh "0.0.0-ci.${GITHUB_SHA::7}"
+          grep -q 'gatekeeper_public_ok=no' dist/ARTIFACT_META.txt
+          ls dist/*.zip | grep -q 'UNSIGNED-NOT-FOR-GATEKEEPER'
+          ./scripts/validate-release-artifact.sh
+          echo "Packaging dry-run evidence: unsigned artifact explicitly marked."

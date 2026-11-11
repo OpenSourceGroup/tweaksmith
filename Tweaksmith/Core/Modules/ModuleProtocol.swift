@@ -14,10 +14,16 @@ public protocol TweakModule: Sendable {
     var summary: String { get }
     var preferenceKeys: [PreferenceKey] { get }
     var minimumMacOSMajor: Int { get }
+    /// Minimum minor version when on `minimumMacOSMajor` (e.g. 4 for 26.4+). Ignored on newer majors.
+    var minimumMacOSMinor: Int { get }
     var compatibilityRisk: CompatibilityRisk { get }
     var compatibilityNotes: [String] { get }
 
     func readDesired(from backend: PreferenceBackend) throws -> [PreferenceEntry]
+}
+
+extension TweakModule {
+    public var minimumMacOSMinor: Int { 0 }
 }
 
 public struct ModuleRegistry: Sendable {

@@ -31,11 +31,18 @@ jobs:
             echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Bootstrap and gate reminder
+      - name: Bootstrap, tests, and gate reminder
+        env:
+          TWEAKSMITH_TEST_ISOLATED_PREFS: "1"
         run: |
-          chmod +x scripts/bootstrap-check.sh scripts/release-gate.sh scripts/run-smoke.sh scripts/package-release.sh
+          chmod +x scripts/bootstrap-check.sh scripts/release-gate.sh scripts/run-smoke.sh scripts/run-swift-test.sh scripts/package-release.sh
           ./scripts/bootstrap-check.sh
           ./scripts/run-smoke.sh
+          if xcodebuild -version >/dev/null 2>&1; then
+            ./scripts/run-swift-test.sh
+          else
+            echo "warning: XCTest skipped — runner has no full Xcode"
+          fi
           ./scripts/release-gate.sh
           echo "Complete docs/RELEASE_GATE.md before promoting to production."
 
@@ -47,13 +54,14 @@ jobs:
           APPLE_CERTIFICATE_BASE64: ${{ secrets.APPLE_CERTIFICATE_BASE64 }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
         run: |
+          chmod +x scripts/validate-release-artifact.sh
           ./scripts/package-release.sh "${{ steps.ver.outputs.version }}"
-          if [[ ! -f dist/ARTIFACT_META.txt ]]; then
-            echo "package-release.sh did not produce ARTIFACT_META.txt"
-            exit 1
+          ./scripts/validate-release-artifact.sh
+          if grep -q 'gatekeeper_public_ok=no' dist/ARTIFACT_META.txt; then
+            echo "RC artifact is UNSIGNED/AD-HOC — draft pre-release only; NOT Stable or Gatekeeper-ready."
           fi
-          if grep -q 'signing_mode=unsigned-adhoc' dist/ARTIFACT_META.txt; then
-            echo "Signing secrets not configured — RC artifact is UNSIGNED/AD-HOC (not Gatekeeper-public)."
+          if grep -q 'gatekeeper_public_ok=yes' dist/ARTIFACT_META.txt; then
+            TWEAKSMITH_REQUIRE_GATEKEEPER=yes ./scripts/validate-release-artifact.sh
           fi
 
       - name: Upload artifacts

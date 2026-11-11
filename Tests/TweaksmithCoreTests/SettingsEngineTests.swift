@@ -86,7 +86,13 @@ final class SettingsEngineTests: XCTestCase {
 
     func testCompatibilityBlocksOldMajorWhenRequired() throws {
         let checker = CompatibilityChecker(host: HostEnvironment(macOSMajor: 14, macOSMinor: 0, appleSilicon: true))
-        let report = checker.evaluate(moduleID: "window-corners", minimumMajor: 26, risk: .medium, notes: [])
+        let report = checker.evaluate(
+            moduleID: "window-corners",
+            minimumMajor: 26,
+            minimumMinor: 4,
+            risk: .medium,
+            notes: []
+        )
         XCTAssertFalse(report.allowed)
         let module = WindowCornersModule(domain: suiteDomain)
         XCTAssertThrowsError(try engine.apply(module.plan(preset: .sharp4), requireCompatibility: report))

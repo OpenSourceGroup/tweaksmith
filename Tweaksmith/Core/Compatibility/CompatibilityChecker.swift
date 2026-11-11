@@ -55,7 +55,13 @@ public struct HostEnvironment: Equatable, Sendable {
 }
 
 public protocol CompatibilityChecking: Sendable {
-    func evaluate(moduleID: String, minimumMajor: Int, risk: CompatibilityRisk, notes: [String]) -> CompatibilityReport
+    func evaluate(
+        moduleID: String,
+        minimumMajor: Int,
+        minimumMinor: Int,
+        risk: CompatibilityRisk,
+        notes: [String]
+    ) -> CompatibilityReport
 }
 
 public struct CompatibilityChecker: CompatibilityChecking, Sendable {
@@ -68,14 +74,20 @@ public struct CompatibilityChecker: CompatibilityChecking, Sendable {
     public func evaluate(
         moduleID: String,
         minimumMajor: Int,
+        minimumMinor: Int = 0,
         risk: CompatibilityRisk,
         notes: [String]
     ) -> CompatibilityReport {
         var outNotes = notes
-        var allowed = true
-        if host.macOSMajor < minimumMajor {
-            allowed = false
-            outNotes.append("Requires macOS \(minimumMajor)+; host reports \(host.macOSMajor).\(host.macOSMinor).")
+        let allowed = MacOSVersionGate.isAllowed(
+            host: host,
+            minimumMajor: minimumMajor,
+            minimumMinor: minimumMinor
+        )
+        if !allowed {
+            let required = MacOSVersionGate.requirementLabel(minimumMajor: minimumMajor, minimumMinor: minimumMinor)
+            let hostLabel = MacOSVersionReporting.fullDescription(host: host)
+            outNotes.append("Requires \(required); this Mac reports \(hostLabel). Apply is blocked.")
         }
         if !host.appleSilicon {
             outNotes.append("Apple Silicon is the primary target; Intel is best-effort only.")

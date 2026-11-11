@@ -71,8 +71,32 @@ enum Smoke {
         expect(threw, "forbid global domain in CI backend", failures: &failures)
 
         let oldHost = CompatibilityChecker(host: HostEnvironment(macOSMajor: 14, macOSMinor: 0, appleSilicon: true))
-        let report = oldHost.evaluate(moduleID: "window-corners", minimumMajor: 26, risk: .medium, notes: [])
+        let report = oldHost.evaluate(
+            moduleID: "window-corners",
+            minimumMajor: 26,
+            minimumMinor: 4,
+            risk: .medium,
+            notes: []
+        )
         expect(!report.allowed, "compatibility blocks old major", failures: &failures)
+
+        let blocked263 = CompatibilityChecker(host: HostEnvironment(macOSMajor: 26, macOSMinor: 3, appleSilicon: true))
+            .evaluate(moduleID: "window-corners", minimumMajor: 26, minimumMinor: 4, risk: .medium, notes: [])
+        expect(!blocked263.allowed, "26.3 blocked for window corners", failures: &failures)
+
+        let allowed264 = CompatibilityChecker(host: HostEnvironment(macOSMajor: 26, macOSMinor: 4, appleSilicon: true))
+            .evaluate(moduleID: "window-corners", minimumMajor: 26, minimumMinor: 4, risk: .medium, notes: [])
+        expect(allowed264.allowed, "26.4 allowed", failures: &failures)
+
+        let allowed27 = CompatibilityChecker(host: HostEnvironment(macOSMajor: 27, macOSMinor: 2, appleSilicon: true))
+            .evaluate(moduleID: "window-corners", minimumMajor: 26, minimumMinor: 4, risk: .medium, notes: [])
+        expect(allowed27.allowed, "27.x allowed", failures: &failures)
+
+        expect(MacOSVersionGate.isAllowed(
+            host: HostEnvironment(macOSMajor: 26, macOSMinor: 3, appleSilicon: true),
+            minimumMajor: 26,
+            minimumMinor: 4
+        ) == false, "MacOSVersionGate 26.3", failures: &failures)
     }
 
     static func supportPrompt(failures: inout Int) throws {
