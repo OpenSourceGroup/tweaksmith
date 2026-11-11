@@ -6,7 +6,16 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+- Window Corners compatibility banner when apply is blocked; About screen shows marketing macOS version and Darwin build
+- Release validation script (`scripts/validate-release-artifact.sh`) and CI packaging dry-run job (unsigned artifacts explicitly labeled)
+- Docs: manual v0.1.0 checklist, signing/notarization secret map ([issue #1](https://github.com/OpenSourceGroup/tweaksmith/issues/1)), voluntary support payments (`docs/SUPPORT_PAYMENTS.md`)
+
 ### Changed
+- **Window Corners** apply requires **macOS 26.4+**; unsupported versions fail closed (no preference write)
+- In-app notes: Electron apps often ignore `NSConvolutionOverride1`; macOS 27+ default radius may differ
+- CI: XCTest and hygiene scans gate merges; block `rzp_test_` / `rzp_live_` patterns in non-doc source
+- Stable `package-release.sh` and production release workflow refuse unsigned / non-notarized artifacts
 - Public repository is [OpenSourceGroup/tweaksmith](https://github.com/OpenSourceGroup/tweaksmith). Kamyab Infotech remains the lead maintainer.
 - DP1 relocated to tag `v0.1.0-dev.1`; plain `v0.1.0` reserved for future Stable
 - Internal testing docs, release channels, issue-template hygiene for DP2 freeze
